@@ -187,17 +187,18 @@
         </div>
         <div class="m_body">
           <?php if ($act == 'edit') { ?>
+            <p style="margin-bottom:10px;"><input type="button" class="dosubmit" value="我要修改" id="edit-form"></p>
+            <script>
+              $(function () {
+                $("#edit-form").click(function () {
+                  $("#form-info").hide();
+                  $("#form-box").show();
+                  return false;
+                });
+              })
+            </script>
             <div id="form-info">
-              <p style="margin-bottom:10px;"><input type="button" class="dosubmit" value="我要修改" id="edit-form"></p>
-              <script>
-                $(function () {
-                  $("#edit-form").click(function () {
-                    $("#form-info").hide();
-                    $("#form-box").show();
-                    return false;
-                  });
-                })
-              </script>
+
               <include file="member:_projectInfo" />
             </div>
           <?php } ?>
@@ -429,6 +430,8 @@
               </p>
             </form>
           </div>
+            <?php if($act = 'edit'){ ?>
+            <?php } ?>
         </div>
       </div>
       <div class="clear"></div>

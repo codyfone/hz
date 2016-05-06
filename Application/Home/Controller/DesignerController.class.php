@@ -57,7 +57,6 @@ class DesignerController extends HomeController {
    * @author huajie <banhuajie@163.com>
    */
   public function profile() {
-    $uid = is_login();
     if (IS_POST) {
       //获取参数
       $data = [
@@ -67,10 +66,11 @@ class DesignerController extends HomeController {
         'content' => I('post.content', '', false),
       ];
 
-      M('Member_exhibitor')->where('userid=' . $uid)->save($data);
+      M('Member_designer')->where('userid=' . $this->mid)->save($data);
       $this->success('修改个人信息成功！');
     } else {
-      $info = M('Member_exhibitor')->where('userid=' . $uid)->find();
+      $info = M('Member_designer')->where('userid=' . $this->mid)->find();
+      $this->assign('info', $info);
       $this->display();
     }
   }
@@ -493,13 +493,194 @@ class DesignerController extends HomeController {
     }
   }
 
-  public function addDesign($pid) {
-    $pid = intval($pid);
-    $project = M('Project')->where('id=' . $pid)->find($pid);
-    if ($project == null) {
-      $this->error('项目不存在');
+  public function addDesign($act, $go = 0, $id = 0, $tid = 0) {
+    $Log = A('Log', 'Helper');
+    $Sms = A('Sms', 'Helper');
+
+    $id = intval($id);
+    $userid = $_SESSION['login']['se_id'];
+    $username = $_SESSION['login']['se_user'];
+    if (IS_POST) {
+      $pro_id = I('pid');
+      $design = D('Design');
+      switch ($act) {
+        case 'add':
+          $data = $design->create();
+          $data['mid'] = $this->mid;
+          $data['uptime'] = date("Y-m-d h:i:s");
+          $data['main'] = array(
+            'pro_id' => $pro_id,
+          );
+          $data['baseinfo'] = array(
+            'content' => I('content', '', false),
+          );
+          //dump($data);exit;
+          $add = $design->relation(true)->add($data);
+          if ($add > 0) {
+//            $linkage = M('Linkage');
+//            $statusname = $linkage->where('id=' . $data['status'])->getField('text');
+//            $notes = '状态为：' . $statusname;
+//            $log_data = array(
+//              'pro_id' => $pro_id,
+//              'des_id' => $add,
+//              'usage' => '无',
+//              'status' => $data['status'],
+//              'notes' => $notes,
+//            );
+//
+//            $Log->actLog($log_data, 2);
+//
+//            $project = M('Project');
+//            $pro = $project->field('company,exhibition')->where('id=' . $pro_id)->find();
+//            $proname = $pro['company'] . '--' . $pro['exhibition'];
+//            $mid = $project->where('id=' . $pro_id)->getField('mid');
+//            $sms_data = array(
+//              'title' => '设计方案：' . $data['title'] . ' 代提交通知。',
+//              'description' => $username . '为您提交了设计方案：“<a href="#" target="_blank">' . $proname . '</a>” -> “<a href="#" target="_blank">' . $data['title'] . '</a>” 的方案负责人，点击方案名称查看更多详情。',
+//            );
+//            $Sms->sendsms($sms_data, $mid);
+            //$Files->actFiles($pro_id,$add,1,$data['_parentId']);
+            if (IS_AJAX)
+              echo 1;
+            else
+              $this->success('方案添加成功');
+          } else {
+            if (IS_AJAX)
+              echo 0;
+            else
+              $this->error('方案添加失败');
+          }
+          break;
+
+        case 'edit':
+          $data = $design->create();
+          $des_id = I('des_id');
+          $pro_id = $data['pro_id'];
+          $data['uptime'] = date("Y-m-d h:i:s");
+          $data['baseinfo'] = array(
+            'content' => I('content', '', false),
+          );
+          unset($data['_parentId'], $data['pro_id']);
+          //dump($data);exit;
+          $map['id'] = array('eq', $des_id);
+          $check = $design->where($map)->getField('check');
+          if ($check) {
+            echo 2;
+            exit;
+          }
+          $edit = $design->relation(true)->where($map)->save($data);
+          if ($edit !== false) {
+//            $project = M('Project');
+//            $pro = $project->field('company,exhibition')->where('id=' . $pro_id)->find();
+//            $proname = $pro['company'] . '--' . $pro['exhibition'];
+//            if ($edit == 1) {
+//              $linkage = M('Linkage');
+//              $statusname = $linkage->where('id=' . $data['status'])->getField('text');
+//              $notes = '状态为：' . $statusname;
+//              $log_data = array(
+//                'pro_id' => $pro_id,
+//                'des_id' => $des_id,
+//                'usage' => '五',
+//                'status' => $data['status'],
+//                'notes' => $notes,
+//              );
+//              $Log->actLog($log_data, 2, 2);
+//
+//              $sms_data = array(
+//                'title' => '设计方案：' . $proname . ' 方案更新通知',
+//                'description' => $username . '更新了设计方案：“<a href="javascript:showTab(\'项目-' . $proname . '\',' . $pro_id . ',' . $des_id . ');">' . $data['title'] . '</a>”，点击方案名称查看更多详情。',
+//              );
+//              $Sms->sendsms($sms_data, $data['mid']);
+//            }
+//            //$Files->actFiles($pro_id,$des_id,1,$data['_parentId']);
+
+           if (IS_AJAX)
+              echo 1;
+            else
+              $this->success('方案修改成功');
+          } else {
+            if (IS_AJAX)
+              echo 0;
+            else
+              $this->error('方案添加失败');
+          }
+          break;
+
+        case 'del':
+          $worklog = M('Worklog_table');
+          $worklogmain = M('Worklog_main_table');
+          $reply = M('Reply_table');
+          $replymain = M('Reply_main_table');
+          $project = M('Project');
+          $map['id'] = array('eq', $id);
+          $pro_id = I('pid');
+          $check = $design->where($map)->getField('check');
+          if ($check) {
+            echo 2;
+            exit;
+          }
+
+          $pro = $project->field('company, exhibition')->where('id=' . $pro_id)->find();
+          $proname = $pro['company'] . '--' . $pro['exhibition'];
+          $designbame = $design->where($map)->getField('title');
+          $mid = $design->where($map)->getField('mid');
+
+          $del = $design->relation(true)->where($map)->delete();
+          if ($del == 1) {
+            $map = array();
+//            $Log->moveLog($id, 2);
+            $sql = '(' . $worklogmain->field('worklog_id as id')->where('`des_id`=' . $id)->select(false) . ')';
+            $map['id'] = array('exp', ' IN(' . $sql . ')');
+            $worklog->where($map)->delete();
+            $worklogmain->where('`des_id`=' . $id)->delete();
+
+            $sql = '(' . $replymain->field('reply_id as id')->where('`des_id`=' . $id)->select(false) . ')';
+            $map['id'] = array('exp', ' IN(' . $sql . ')');
+            $reply->where($map)->delete();
+            $replymain->where('`des_id`=' . $id)->delete();
+
+//            $log_data = array(
+//              'pro_id' => $pro_id,
+//              'des_id' => $id,
+//              'usage' => '无',
+//              'status' => 0,
+//              'notes' => $designbame,
+//            );
+//            $Log->actLog($log_data, 2, 3);
+
+//            $sms_data = array(
+//              'title' => '项目：' . $proname . ' 方案刪除通知',
+//              'description' => $username . '刪除了方案：“' . $designbame . '”。',
+//            );
+//            $Sms->sendsms($sms_data, $mid);
+
+            //$Files->actFiles(0,$id,2);
+
+            echo 1;
+          } else {
+            echo 0;
+          }
+          break;
+      }
+    } else {
+      if ($act == 'edit') {
+        $design = D('Design');
+        $map['id'] = array('eq', $id);
+        $info = $design->relation(true)->where($map)->find();
+        if ($info['mid'] != $this->mid) {
+          $this->error('方案不存在');
+        }
+        $this->assign('info', $info);
+      } else {
+        
+      }
+      $this->assign('uniqid', uniqid());
+      $this->assign('act', $act);
+      $this->assign('id', $id);
+      $this->assign('tid', $tid);
+      //dump($tid);exit;
+      $this->display();
     }
-    $this->display();
   }
 
   /*

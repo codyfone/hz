@@ -24,7 +24,7 @@
           <h3>项目详情</h3>
         </div>
         <div class="m_body">
-          <h1 style="margin-bottom: 10px;font-size:26px;"><?= $info['company'] ?></h1>
+          <p style="margin-bottom: 10px;font-size:24px;width:820px;"><a class="btn-yellow fr" href="{:U('designer/addDesign',['act'=>'add','pid'=>$info['id']])}">我要投稿</a><span class="red">[设计需求]</span> <?= $info['company'] ?></p>
           <include file="member:_projectInfo" />
         </div>
       </div>
@@ -32,7 +32,6 @@
     </div>
 
   </div>
-
   <include file="index:_foot" />
 </body>
 </html>

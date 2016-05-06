@@ -12,7 +12,6 @@ class ExhibitorController extends HomeController {
   /* 用户中心首页 */
 
   public $mid;
-  public $modelid = 1;
   public $groupid;
 
   protected function _initialize() {
@@ -23,7 +22,7 @@ class ExhibitorController extends HomeController {
     }
     $user_auth = session('user_auth');
     $this->mid = $user_auth['uid'];
-    if ($this->modelid != $user_auth['modelid']) {
+    if (1 != $user_auth['modelid']) {
       $this->error('展商账号不存在！', U('index/index'));
     }
     $this->groupid = $user_auth['groupid'];
