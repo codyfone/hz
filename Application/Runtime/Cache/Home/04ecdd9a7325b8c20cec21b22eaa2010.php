@@ -1,0 +1,1 @@
+<?php if (!defined('THINK_PATH')) exit();?>无法获取ID

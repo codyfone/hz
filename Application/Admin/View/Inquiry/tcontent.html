@@ -1,0 +1,332 @@
+<script language="javascript">
+function onAddDesignReply(idd){
+	var ids = $("#ids"+idd).val();
+	var pidd = $("#pids").val();
+	var isform = $(".add-reply").length;
+	if(!isform){
+		$("<div/>").dialog({
+			title:'发表评论',
+			resizable:true,
+			width:850,
+			height:375,
+			href:'__URL__/reply/act/add/id/'+pidd+'/tid/'+ids,
+			onOpen:function(){
+				cancel['ReplyAdd'] = $(this);
+			},
+			onClose:function(){
+				cancel['ReplyAdd'].dialog('destroy');
+				cancel['ReplyAdd'] = null;
+			}
+		});
+	}
+}
+
+function onEditDesignReply(idd,id){
+	var isform = $(".add-reply").length;
+	if(!isform){
+		$("<div/>").dialog({
+			title:'编辑评论',
+			resizable:true,
+			width:850,
+			height:375,
+			href:'__URL__/reply/act/edit/id/'+id,
+			onOpen:function(){
+				cancel['ReplyAdd'] = $(this);
+			},
+			onClose:function(){
+				cancel['ReplyAdd'].dialog('destroy');
+				cancel['ReplyAdd'] = null;
+			}
+		});
+	}
+}
+
+function onDelDesignReply(idd,id){
+	var ids = $("#ids"+idd).val();
+	$.messager.confirm('提示','确定删除该评论吗！',function(r){
+		if(r==true){
+			$.messager.progress();
+			$.post('__URL__/reply/act/del/go/1/id/'+id, function(data){
+				$.messager.progress('close');
+				if(data==1){
+					$.messager.alert('提示','删除评论成功！','info',function(){
+						$("#proDetailCon").panel('refresh');
+					});
+				}else if(data==0){
+					$.messager.alert('提示','删除评论失败！','warning');
+				}else{
+					$.messager.alert('提示','您没有删除权限！','warning');
+				}
+			});
+		}
+	});
+}
+
+function onEditDesign(idd){
+	var idd = $("#ids"+idd).val();
+	var isform = $(".add-design").length;
+	if(!isform){
+		$("<div/>").dialog({
+			title:'编辑方案',
+			resizable:true,
+			width:720,
+			height:480,
+			href:'__URL__/design/act/edit/id/'+idd,
+			onOpen:function(){
+				cancel['Design'] = $(this);
+			},
+			onClose:function(){
+				cancel['Design'].dialog('destroy');
+				cancel['Design'] = null;
+			}
+		});
+	}
+}
+
+function onDelDesign(idd){
+	var idd = $("#ids"+idd).val();
+	var pidd = $("#pids").val();
+	$.messager.confirm('提示','确定删除该方案吗！',function(r){
+		if(r==true){
+			$.messager.progress();
+			$.post('__URL__/design/act/del/go/1', {id:idd,pid:pidd}, function(data){
+				$.messager.progress('close');
+				if(data==1){
+					$.messager.alert('提示','删除方案成功！','info',function(){
+						$("#designTree").tree('reload');
+						$("#proDetailCon").panel('refresh','__URL__/content/id/'+pidd);
+					});
+				}else if(data==2){
+					$.messager.alert('提示','该方案已审核，不能删除！','warning');
+				}else if(data==0){
+					$.messager.alert('提示','删除方案失败！','warning');
+				}else{
+					$.messager.alert('提示','您没有删除权限！','warning');
+				}
+			});
+		}
+	});
+}
+
+function onCheck(idd,type){
+	var idd = $("#ids"+idd).val();
+	var pidd = $("#pids").val();
+	if(type==1){
+		$.messager.confirm('提示','确定审核该方案吗！',function(r){
+			if(r==true){
+				$.messager.progress();
+				$.post('__URL__/check/type/1', {id:idd,pid:pidd}, function(data){
+					$.messager.progress('close');
+					if(data==1){
+						$.messager.alert('提示','审核方案成功！','info',function(){
+							$("#proDetailCon").panel('refresh');
+						});
+					}else if(data==0){
+						$.messager.alert('提示','审核方案失败！','warning');
+					}else{
+						$.messager.alert('提示','您没有审核权限！','warning');
+					}
+				});
+			}
+		});
+	}else{
+		$.messager.confirm('提示','确定反审核吗！',function(r){
+			if(r==true){
+				$.messager.progress();
+				$.post('__URL__/check/type/0', {id:idd,pid:pidd}, function(data){
+					$.messager.progress('close');
+					if(data==1){
+						$.messager.alert('提示','反审核方案成功！','info',function(){
+							$("#proDetailCon").panel('refresh');
+						});
+					}else if(data==0){
+						$.messager.alert('提示','反审核方案失败！','warning');
+					}else{
+						$.messager.alert('提示','您没有审核权限！','warning');
+					}
+				});
+			}
+		});
+	}
+}
+
+function onAddInquiry(idd){
+	var idd = $("#ids"+idd).val();
+	var pidd = $("#pids").val();
+	var isform = $(".add-design").length;
+	if(!isform){
+		$("<div/>").dialog({
+			title:'新增方案',
+			resizable:true,
+			width:720,
+			height:490,
+			href:'__URL__/design/act/add/id/'+pidd+'/tid/'+idd,
+			onOpen:function(){
+				cancel['Design'] = $(this);
+			},
+			onClose:function(){
+				cancel['Design'].dialog('destroy');
+				cancel['Design'] = null;
+			}
+		});
+	}
+}
+
+function getAddWork(dates){
+	var idd = $("#ids{$uniqid}").val();
+	var pidd = $("#pids").val();
+	var isform = $(".add-worklog").length;
+	if(!isform){
+		$("<div/>").dialog({
+			title:'新增工作日志',
+			resizable:true,
+			width:720,
+			height:406,
+			href:'__URL__/worklog/act/add/id/'+pidd+'/tid/'+idd+'/dates/'+dates,
+			onOpen:function(){
+				cancel['Worklog'] = $(this);
+			},
+			onClose:function(){
+				cancel['Worklog'].dialog('destroy');
+				cancel['Worklog'] = null;
+			}
+		});
+	}
+}
+
+function getDetailWork(id){
+	var isform = $(".add-worklog").length;
+	if(!isform){
+		$("<div/>").dialog({
+			title:'工作日志详情',
+			resizable:true,
+			width:720,
+			height:406,
+			href:'__URL__/worklog/act/detail/id/'+id,
+			onOpen:function(){
+				cancel['Worklog'] = $(this);
+			},
+			onClose:function(){
+				cancel['Worklog'].dialog('destroy');
+				cancel['Worklog'] = null;
+			}
+		});
+	}
+}
+
+$(function(){
+	$("#lastMonth").click(function(){
+		var idd = $("#ids{$uniqid}").val();
+		var pidd = $("#pids").val();
+		$("#proDetailCon").panel('refresh','__URL__/content/id/'+pidd+'/tid/'+idd+'/json/1/getmonth/{$nowmonth}');
+	});
+	
+	$("#nextMonth").click(function(){
+		var idd = $("#ids{$uniqid}").val();
+		var pidd = $("#pids").val();
+		$("#proDetailCon").panel('refresh','__URL__/content/id/'+pidd+'/tid/'+idd+'/json/2/getmonth/{$nowmonth}');
+	});
+});
+
+function toPage(url){
+	$("#proDetailCon").panel('refresh',url);
+}
+</script>
+ <table class="infobox table-border" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:6px;">
+ <tr>
+    <td class="rebg" width="12%"><label for="title">方案名称</label><input id="ids{$uniqid}" type="hidden" value="{$info.id}" /><input id="pids" type="hidden" value="{$info.main.pro_id}" /></td>
+    <td colspan="3">{$info.title}</td>
+   </tr>
+  <tr>
+    <td class="rebg" width="12%"><label for="mid">设计师</label></td>
+    <td width="21%">{$info.designer}</td>
+    <td class="rebg" width="12%"><label for="enddate">计划完成日</label></td>
+    <td width="39%">{$info.enddate}</td>
+  </tr>
+  <tr>
+    <td class="rebg" width="12%"><label for="check">是否审核</label></td>
+    <td width="21%">{$info.checkinfo}  <if condition="$info['check']">[<span class="up-font">{$info.checkname}</span>]</if></td>
+    <td class="rebg"><label for="remain">方案进度</label></td>
+    <td>{$info.statusname}</td>
+  </tr>
+
+  <tr>
+    <td height="35" colspan="6">
+     <if condition="$info['status']==51">
+     <a href="javascript:void(0);" onclick="javascript:onAddInquiry('{$uniqid}')" class="easyui-linkbutton ma-right" data-options="iconCls:'icon-design'">生成询价单</a>
+     </if>
+     <if condition="$info['check']">
+     <a href="javascript:void(0);" onclick="javascript:onCheck('{$uniqid}',0)" class="easyui-linkbutton ma-right" data-options="iconCls:'icon-ok'">反审核</a>
+     <else />
+     <a href="javascript:void(0);" onclick="javascript:onCheck('{$uniqid}',1)" class="easyui-linkbutton ma-right" data-options="iconCls:'icon-ok'">审核</a>
+     </if>
+     <a href="javascript:void(0);" onclick="javascript:onAddDesignReply('{$uniqid}')" class="easyui-linkbutton ma-right" data-options="iconCls:'icon-talk'">发表评论</a>
+     <a href="javascript:void(0);" onclick="javascript:onEditDesign('{$uniqid}')" class="easyui-linkbutton ma-right" data-options="iconCls:'icon-edit'">编辑</a>
+     <a href="javascript:void(0);" onclick="javascript:onDelDesign('{$uniqid}')" class="easyui-linkbutton ma-right" data-options="iconCls:'icon-cancel'">刪除</a>
+    </td>
+  </tr>
+ </table>
+ 
+ <if condition="$info['baseinfo']['content']">
+ <div>
+     <div class="detail-tit">方案备注</div> 
+     <div class="detail-con">
+      {$info.baseinfo.content}
+     </div>
+ </div>
+ </if>
+ 
+ <if condition="$logcount gt 0">
+ <div style="margin-top:10px;">
+     <div class="detail-tit">操作日志</div> 
+     <div class="detail-con">
+      {$linfo}
+     </div>
+ </div>
+ </if>
+ 
+ <if condition="$rinfo">
+ <div style="margin-top:10px; margin-bottom:20px;">
+     <div class="detail-tit">评论</div> 
+     <div>
+     <table class="infobox table-border" width="100%" border="0" cellspacing="0" cellpadding="0">
+       <?php
+        foreach($rinfo as $k=>$t){
+         if($k%2==0){
+         	$cls = 'class="rebg5"';
+         }else{
+         	$cls = '';
+         }
+       ?>
+        <tr>
+            <td height="46" {$cls}>
+             <div class="tpt"><span class="rpl">{$t.username} 于	 {$t.addtime} 发表的评论</span><span class="rpr"><if condition="$uid==$t['user_id'] || in_array('a',$role) || $role=='all'"><a href="javascript:onEditDesignReply('{$uniqid}','{$t.id}');">[编辑]</a>&nbsp;&nbsp;<a href="javascript:onDelDesignReply('{$uniqid}','{$t.id}');">[刪除]</a></if></span></div>
+             <div class="tpc">{$t.description}</div>
+            </td>
+       </tr>
+      <?php
+       }
+      ?> 
+      </table>
+      <div class="pages">{$showpage}</div>
+   </div>
+ </div>
+ </if>
+ 
+ <div style="margin-top:10px;">
+     <div class="detail-tit">工作日志</div> 
+     <div class="detail-con">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr class="topdate">
+        <td width="14%" height="35" valign="top"><span class="lastmon le"><a href="javascript:void(0);" id="lastMonth" class="up-font">上一月</a></span></td><td colspan="5" align="center" valign="top" class="toptit">{$nowmonth}</td><td width="15%" align="right" valign="top"><span class="nextmon ri"><a href="javascript:void(0);" id="nextMonth" class="up-font">下一月</a></span></td>
+       </tr>
+       <tr class="titdate">
+        <td width="14%" align="center">星期日</td><td width="14%" align="center">星期一</td><td width="14%" align="center">星期二</td><td width="14%" align="center">星期三</td><td width="14%" align="center">星期四</td><td width="14%" align="center">星期五</td><td width="14%" align="center">星期六</td>
+       </tr>
+      </table>
+      <table class="infobox table-border" width="100%" border="0" cellspacing="0" cellpadding="0">
+       {$str}
+      </table>
+   </div>
+ </div>
+<div id="addProject"></div>

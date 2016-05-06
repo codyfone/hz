@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS `#@_sms_table`;
+CREATE TABLE `#@_sms_table` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `title` char(50) NOT NULL DEFAULT '',
+  `sendtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`) USING BTREE,
+  KEY `user_id` (`user_id`) USING BTREE
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+REPLACE INTO `#@_sms_table` VALUES ('1','1','1','项目：退货政策 负责人任命通知','2016-02-25 14:26:49');
+REPLACE INTO `#@_sms_table` VALUES ('2','1','0','项目：退货政策 创建通知','2016-02-25 14:26:49');

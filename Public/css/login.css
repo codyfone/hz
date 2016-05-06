@@ -1,0 +1,167 @@
+
+/* 注册页面开始 */
+.login-h2{color:#e92424;font-size:26px;font-weight: bold;margin-bottom: 20px;}
+.register_main{}
+.register_main .left_ad_container{float:left;}
+.register_main .right_form_container{width:535px;float:right;}
+
+.register_form_top{border-bottom:1px #ffcecb solid;height:25px;margin-bottom:20px;}
+.register_form_top a{height:24px;margin-right:20px;display:inline-block;color:#333;font-size:16px;cursor: pointer;}
+.register_form_top a.current{color:#d8271c;border-bottom:2px solid #d8271c;}
+.form-group{margin-top:10px;line-height: 30px;position: relative;}
+.register_left{width:374px;}
+.register_form{width:300px;margin:auto;}
+.register_right{width:295px;border-left:1px dashed #ccc; }
+.register-utype{display: inline-block;float:left;margin-bottom: 10px;margin-right: 15px;width:110px;}
+.register-utype input{margin-right: 5px;}
+#nickname,#username,#mobile,#email,#password,#repassword{width:295px;height:36px;line-height: 36px;}
+.register_tel,
+.register_email,
+.register_vcode{margin-top:10px;line-height: 30px;height:42px;}
+.register_vcode input{width:150px;hfloat:left;}
+.register_vcode img{display:inline-block;float:left;}
+.register_message{height:36px;}
+#mobile_verify,#code{width:150px;height:36px;float:left;}
+.register_message button{display:inline-block;float:left;width:130px;margin-left:10px;border:1px solid #fba412;height:36px;line-height:36px;font-size:14px;text-align:center;border-radius:2px;box-sizing: content-box;padding:0;background: #ff9c03;color:#fff;}
+.register_message button.disabled{background: #eee;color:#333;border-color:#ccc;}
+#mobile_send{color:#f00;}
+#edit_mobile a{color:#06c}
+
+.register_tijiao input{width:160px;}
+.form-btn{height:44px;background:#d8271c;color:#fff;border:none;border-radius:2px;font-size:18px;padding:0;cursor:pointer;}
+.register_right_main{width:225px;margin:auto;font-family:"新宋体";font-size:14px;}
+.register_right_main .p1{}
+.register_right_main .p1 a{color:#d8271c;}
+.register_right_main .p2{margin-top:30px;}
+.register_right_main .p2 a{margin-right:5px;display:inline-block;margin-top:10px;}
+.register_right_main .p3{margin-top:20px;}
+.register_right_main .p3 img{margin-top:10px;}
+
+
+.red{color:#f00;}
+.form-register{width:900px;margin:0 auto;}
+.form-register .form-label{width:120px;text-align: right;display: inline-block;float:left;}
+.form-register label.ib{display: inline-block;}
+/* 注册页面结束*/
+
+/* 登陆页面开始 */
+.login_left{width:374px;padding-top: 40px;}
+.login_form{width:300px;margin:auto;}
+.login_right{width:295px;border-left:1px dashed #ccc; }
+.login_password,.login_code{margin-top:10px;line-height: 30px;}
+.login_code .input-txt,.login_code .input-focus {width:100px;}
+.verifycode{height:40px;margin-left:10px;display: inline-block;line-height: 40px;background: #EDF7FF;}
+.verifycode img{vertical-align: middle;}
+.remember_me{margin-top:20px;font-size:14px;height:30px;}
+.remember_me a{float:right;color:#d8271c;font-family:"新宋体";}
+.login_tijiao{margin-top:10px;}
+.login_tijiao input{width:160px;height:44px;background:#d8271c;color:#fff;border:none;border-radius:2px;font-size:18px;cursor:pointer;}
+/* 登陆页面结束 */
+
+body fieldset{border:1px solid #D8D8D8; padding:10px;}
+body fieldset legend{padding:3px 8px;font-weight:700;border:1px solid #D8D8D8;background-color: #F9F9F9;}
+body fieldset.blue{border:1px solid #dce3ed}
+body fieldset.blue legend{padding:3px 8px;font-weight:700;color:#347add; background:none; border:none}
+.picBut {background:url("../images/admin_img/picBnt.png") no-repeat 0 -28px;color:#FFF;float:left; text-align:center;font-weight:700;height:28px;line-height:26px;*line-height:30px;margin-right:10px;width:75px}
+.picBut a{color:#fff;text-decoration: none; width:75px; height:28px;display:inline-block;zoom:1;*display:inline;}
+
+.table-list td,.table-list th{padding-left:14px}
+.table-list thead th{ height:30px; background:#eef3f7; border-bottom:1px solid #d5dfe8; font-weight:normal}
+.table-list tbody td,.table-list .btn{border-bottom: #eee 1px solid; padding-top:5px; padding-bottom:5px}
+div.btn{background:#f6f6f6; padding:6px 12px 0 12px; height:30px;line-height:30px}
+.table-list tr:hover,.table-list table tbody tr:hover{ background:#fbffe4}
+.nHover tr:hover,.nHover tr:hover td{ background:none}
+.table-list .input-text-c{ padding:0; height:18px}
+.input-text-c{border:1px solid #A7A6AA;height:18px;padding:2px 0 0; text-align:center}
+.td-line{border:1px solid #eee}
+.td-line td,.td-line th{border:1px solid #eee}
+.table-list tr.on,.table-list tr.on td,.table-list tr.on th,.table-list td.on,.table-list th.on{background:#fdf9e5;}
+a.close-own{background: url(../images/cross.png) no-repeat left 3px; display:block; width:16px; height:16px;position: absolute;outline:none;right:7px; top:8px; text-indent:200px; overflow: hidden}
+a.close-own:hover{background-position: left -46px}
+/*通用表单*/
+.common-form{}
+.common-form div.contentWrap{padding-right:20px}
+.common-form ul li{color:#444; clear:both; vertical-align:middle}
+.common-form ul li span.text{width:60px}
+.common-form .set{border:1px dashed #e0e7ed;zoom:1; background:#f2f7fb; padding:10px; font-size:14px; margin-bottom:10px}
+.common-form .set table td,.common-form .set table th{padding-left:12px}
+.common-form .set table th{font-weight:normal; text-align:left;padding:0 8px}
+.common-form .set table td{ padding:3px 0 3px 5px}
+.common-form .set table td.y-bg{background: url(../images/admin_img/set_y_line.png) repeat-y right top}
+.common-form .set table td input{ background-image:none; height:18px; font-size:14px;}
+.input-text,.measure-input,textarea,input.date,input.endDate,.input-focus{height:26px;margin:0 5px 0 0;padding:2px 0 2px 5px;border:1px solid #dae5e6;font-size:14px;border-radius: 3px; font-family: Verdana, Geneva, sans-serif,"宋体";background:#f2feff;}
+.input-focus{border-color:#afcee6;}
+input.date,input.endDate{background: #fff url(../images/admin_img/input_date.png) no-repeat right 6px; padding-right:18px;font-size:14px;}
+textarea,textarea.input-text,textarea.input-focus{font-size:14px;height:auto; padding:5px; margin:0;}
+select{ vertical-align:middle;height:32px;*height:26px;border:1px solid #dae5e6;color:#333;padding:2px;border-radius: 3px; background:#f2feff;}
+.select:focus{border-color:#afcee6;}
+.search-form{ margin-bottom:10px}
+/*表格表单*/
+.table_form{font-size:14px;}
+.table_form td{padding-left:12px}
+.table_form th{font-weight:normal; text-align:right;padding-right:10px; color:#777}
+.table_form td label{ vertical-align:middle}
+.table_form td,.table_form th{padding:4px 0 4px 8px}
+
+.colorpanel tbody td,.colorpanel tbody th{ padding:0;border-bottom: none;}
+/*select美化*/
+.js ul.newList {left:-9999px;}
+ul.newList * {margin:0; padding:0;}
+ul.newList {margin:0; padding:0; list-style:none; color:#000; background:#fff; position:absolute;  border:1px solid #ccc; top:22px; left:0; overflow:auto; z-index:9999;}
+.newListSelected {color:#000; height:22px; padding:4px 0 0 6px; float:left; background:url(../images/select-bg.png) no-repeat right 0; border-left:1px solid #dfdfdf}
+.newListSelected span {display:block;}
+ul.newList li a {padding:3px 8px;display:block;text-decoration: none;}
+.selectedTxt {overflow:hidden; height:16px; padding:0 23px 0 0;}
+.measure-input {background:url("../images/ruler.gif") repeat-x scroll 0 17px transparent}
+.hiLite {background:#e0ebf4!important; color:#444!important;}
+.newListHover {background:#f2f7fb!important; color:#000!important; cursor:default;}
+.newListSelHover, .newListSelFocus {background-position:right -26px; cursor:default;}
+.newListOptionTitle {font-weight:bold;}
+.newListOptionTitle ul {margin:3px 0 0;}
+.newListOptionTitle li {font-weight:normal; border-left:1px solid #ccc;}
+
+/*表单验证*/
+.onShow,.onFocus,.onError,.onCorrect,.onLoad,.onTime{display:inline-block;display:-moz-inline-stack;zoom:1;*display:inline; vertical-align:middle;background:url(../images/msg_bg.png) no-repeat;	color:#444;line-height:18px;padding:2px 10px 2px 23px; margin-left:10px;_margin-left:5px}
+.onShow{background-position:3px -147px;border-color:#40B3FF;color:#959595}
+.onFocus{background-position:3px -147px;border-color:#40B3FF;}
+.onError{background-position:3px -47px;border-color:#40B3FF; color:red}
+.onCorrect{background-position:3px -247px;border-color:#40B3FF;}
+.onLamp{background-position:3px -200px}
+.onTime{background-position:3px -1356px}
+
+/*联动菜单*/
+.linkage-menu{height:200px; overflow-y:auto; padding:0 4px}
+.linkage-menu h6{ border-bottom:1px solid #e2ecee; padding:2px 0 3px; margin-bottom:5px}
+.linkage-menu h6 a.rt{ font-weight:normal; font-family:'宋体';color:#377abe}
+.linkage-menu div.menu a{width:74px; line-height:22px;text-decoration: none; padding-left:4px; overflow:hidden; height:22px}
+.linkage-menu div.menu a:hover{ background:#d9e4ed; color:#377abe}
+div#areaid{height:26px;margin:0 5px 0 0;padding:2px 5px 2px;border: 1px solid #dae5e6;background: #f2feff; position:relative;border-radius: 3px;line-height:26px;    font-family: Verdana, Geneva, sans-serif,"宋体";}
+
+.picList li{ padding:0 0 8px}
+.display {display:none}
+
+/**视频上传**/
+.tbsa{}
+.tbsa li{float:left; width:25%; margin:8px 0px;padding-top:6px;}
+.tbsa li.ac{background-color:#EFEFEF;}
+.r1{width:132px; margin-left:auto; margin-right:auto; overflow:hidden;}
+.r1 img{display:block; box-shadow: 0 0 2px #EFEFEF;}
+.r1 h6{height:26px; line-height:26px; overflow:hidden;font-weight: 100; color:#666;}
+.r2 input{width:2em;}
+.r2 .l{float:left; color:#666;}
+.r2 .l label{margin-right:2px;}
+.r2 .r{float:right;}
+.tbb{border-left:1px solid #eee;border-right:1px solid #eee; margin-bottom:8px;}
+
+/*20121207*/
+.common-form .tpl_style{}
+.common-form .tpl_style li{float:left; margin-right:10px; clear: none; border: 1px solid #ddd; background-color: #F5FAFE; padding:4px 12px; cursor: pointer;}
+.common-form .tpl_style li.ac{border:1px solid #639DCF;}
+
+
+.register-h2{color: #e92424;font-size: 26px;font-weight: bold;margin-bottom: 20px;}
+
+.copy{line-height: 24px;text-align: center;font-family: '宋体';font-size:12px;color:#666;}
+.regtype{overflow: hidden;}
+.regtype a{float:left;display: block;width:98px;height:34px;line-height: 34px;background: #eee;border-top:1px solid #efefef;border-left:1px solid #efefef;border-right:1px solid #ccc;border-bottom:1px solid #ddd; text-align: center;color:#444;}
+.regtype a.current{ background: #ff9c03;color:#fff;border-top:1px solid #FDC648;border-left:1px solid #FDC648;border-right:1px solid #DB6A05;border-bottom:1px solid #DB6A05;}

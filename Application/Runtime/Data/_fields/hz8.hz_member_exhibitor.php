@@ -1,0 +1,1 @@
+a:6:{i:0;s:6:"userid";i:1;s:4:"name";i:2;s:4:"addr";i:3;s:7:"content";s:3:"_pk";s:6:"userid";s:5:"_type";a:4:{s:6:"userid";s:21:"mediumint(8) unsigned";s:4:"name";s:11:"varchar(80)";s:4:"addr";s:12:"varchar(255)";s:7:"content";s:4:"text";}}

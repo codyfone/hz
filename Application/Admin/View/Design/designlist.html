@@ -1,0 +1,292 @@
+<script language="javascript">
+var ptit;
+$(function(){
+	var th = $(".top").height();
+	th = 111-th
+	var wh = $(window).height()-th;
+	var cw = $(window).width()-177;
+	whs = (wh-289);
+	var pr = '<?php echo $page_row ?>';
+	var pn = false;
+	if(pr>0){
+		pn = true;
+	}
+	$("#designIndexList{$uniqid}").datagrid({	
+		height:whs,
+		autoRowHeight:true,
+		singleSelect:true,
+		striped:true,
+		pagination:pn,
+		rownumbers:true,
+		pagination:true,
+		pageSize:30,
+		pageList:[30,50,80,100,1000],
+		method:'get',
+		sortName:'t1_old_uptime',
+		sortOrder:'desc',
+		url:'__URL__/designlist/type/{$type}/json/1',
+		fitColumns:false,
+		nowrap:Number('{$Think.config.DATA_NOWRAP}'),
+		selectOnCheck:false,
+		checkOnSelect:true,
+		onLoadSuccess: function () {
+			 if($("#designIndexListCon{$uniqid} .datagrid-toolbar table tr #sersSearchDesign{$uniqid}").length==0){
+				 var grid = $("#designIndexListCon{$uniqid} .datagrid-toolbar table tr");  
+				 var date = '<td>'+$("#selectInputDesign{$uniqid}").html()+'</td>';    
+				 grid.prepend(date); 
+				 $("#sersSearchDesign{$uniqid}").combobox({
+					url:'__URL__/getProject',
+					editable:true,
+					method:'get',
+					valueField:'id',
+					textField:'text',
+					filter: function(q,r){
+						var opts = $(this).combobox('options');
+						var v = r[opts.textField];
+						var vu = v.toUpperCase();
+						var vp = String(getPinYin(v));
+						var qp = q.toUpperCase();
+						if(vp.indexOf(qp)>=0 || vu.indexOf(qp) >= 0){
+							return r[opts.textField];
+						}
+					}
+				 }); 
+				 //alert(se['year']);
+				 $("#searchYear{$uniqid}").val(se['year']?se['year']:'{$nowyear}');
+				 $("#searchMonth{$uniqid}").val(se['month']?se['month']:'{$nowmonth}');
+				 $("#searchType{$uniqid}").val(se['type']);
+				 $("#searchStatus{$uniqid}").val(se['status']);
+				 $("#sersSearchDesign{$uniqid}").combobox('setValue',se['pro_id']);
+			 }
+		},
+		onDblClickRow:function(e,rowIndex,rowData){
+			//var se = $("#Project").datagrid('getSelected')
+			var se = $("#designIndexList{$uniqid}").datagrid('getChecked');
+			var se_len = se.length;
+			var id = se[0]['id'];
+			var idd = se[0]['t1_old_pro_id'];
+			var idn = se[0]['t1_old_proname'];
+			//alert(idd);
+			var ishas = $("#rightTabs").tabs('exists',ptit);
+			if(!ishas){
+				$("#rightTabs").tabs('add',{
+					id : -4,
+					title : '项目-'+idn,
+					href : '__MODULE__/project/detail/id/'+idd+'/tid/'+id,
+					closable : true,
+				});
+				ptit = '项目-'+idn;
+			}else{
+				if('项目-'+idn!=ptit){
+					var tab = $("#rightTabs").tabs('getTab',ptit);
+					$("#rightTabs").tabs('update',{
+						tab:tab,
+						options:{
+							title : '项目-'+idn,
+							href : '__MODULE__/project/detail/id/'+idd+'/tid/'+id,
+							closable : true,
+						} 
+					});
+					ptit = '项目-'+idn;
+					$("#rightTabs").tabs('select',ptit);
+				}else{
+					$("#rightTabs").tabs('select',ptit);
+				}
+			}
+		},
+		onUncheck:function(i,d){
+			$("#designIndexList{$uniqid}").datagrid('unselectRow',i);
+		},
+		toolbar:[{
+			iconCls: 'icon-reload',
+			text : '重载',
+			handler: function(){
+				$.get('__URL__/clear', function(data){
+					$("#searchYear{$uniqid}").val('{$nowyear}');
+				 	$("#searchMonth{$uniqid}").val('{$nowmonth}');
+					$("#searchType{$uniqid}").val(0);
+					$("#searchStatus{$uniqid}").val(0);
+					$("#sersSearchDesign{$uniqid}").combobox('setValue',0);
+					$("#designIndexList{$uniqid}").datagrid('reload');
+				});
+			}
+		},'-',{
+			iconCls: 'icon-excel',
+			text : '导出EXCEL',
+			handler: function(){				
+				window.location = "__URL__/designlist/type/{$type}/json/1/method/excel";
+			}
+		}],
+		frozenColumns:[[
+			{field:'t1_old_title',title:'方案名称',width:250,sortable:true,rowspan:2},
+		]],
+		columns:[[ 
+			{field:'t2_old_username',title:'来自',width:65,sortable:true,rowspan:2},
+			{field:'t1_new_status',title:'方案状态',width:110,sortable:true,rowspan:2},
+			{field:'t1_old_startdate',title:'计划开始',width:100,sortable:true,rowspan:2},
+			{field:'t1_old_enddate',title:'计划完成',width:100,sortable:true,rowspan:2},
+			{field:'t1_old_pass',title:'方案进度',width:110,sortable:true,rowspan:2},
+			{field:'t1_old_proname',title:'所属项目',width:230,rowspan:2},
+			{field:'t1_old_uptime',title:'更新时间',width:155,sortable:true,rowspan:2},
+			{title:'<?php echo $week[8]; ?>',width:700,colspan:7,align:'center',resizable:false}
+		],[
+			{field:'w1',title:'<?php echo $week[1]; ?>',width:100,align:'center',resizable:false},
+			{field:'w2',title:'<?php echo $week[2]; ?>',width:100,align:'center',resizable:false},
+			{field:'w3',title:'<?php echo $week[3]; ?>',width:100,align:'center',resizable:false},
+			{field:'w4',title:'<?php echo $week[4]; ?>',width:100,align:'center',resizable:false},
+			{field:'w5',title:'<?php echo $week[5]; ?>',width:100,align:'center',resizable:false},
+			{field:'w6',title:'<?php echo $week[6]; ?>',width:100,align:'center',resizable:false},
+			{field:'w7',title:'<?php echo $week[7]; ?>',width:100,align:'center',resizable:false}
+		]]
+	});
+	
+	$("#rightTabs").tabs({
+		onClose:function(t,i){
+			$.ajaxSetup({  
+				async : false  
+			});
+			if(t=='方案列表'){
+				$.get('__URL__/clear', function(data){});
+			}
+			$.ajaxSetup({  
+				async : true  
+			});
+		}
+	});
+	
+	$("#rightTabs").tabs('select','方案列表');
+	
+	$("#workToLasts").click(function(){
+		$.get('__URL__/chgweek/act/1', function(data){
+			$("#designIndexList{$uniqid}").datagrid('reload');
+			$.getJSON('__URL__/designlist/type/{$type}/json/1/method/week',function(data){
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w1',text:data[1]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w2',text:data[2]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w3',text:data[3]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w4',text:data[4]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w5',text:data[5]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w6',text:data[6]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w7',text:data[7]});
+				$("#midWeeks").html(data[9]);
+			});
+		});
+	});
+	
+	$("#workToNexts").click(function(){
+		$.get('__URL__/chgweek/act/2', function(data){
+			$("#designIndexList{$uniqid}").datagrid('reload');
+			$.getJSON('__URL__/designlist/type/{$type}/json/1/method/week',function(data){
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w1',text:data[1]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w2',text:data[2]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w3',text:data[3]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w4',text:data[4]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w5',text:data[5]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w6',text:data[6]});
+				$("#designIndexList{$uniqid}").datagrid("setColumnTitle",{field:'w7',text:data[7]});
+				$("#midWeeks").html(data[9]);
+			});
+		});
+	});
+});
+
+function getAddWork(dates,tid,pidd){
+	var isform = $(".add-worklog").length;
+	if(!isform){
+		$("<div/>").dialog({
+			title:'新增工作日志',
+			resizable:true,
+			width:720,
+			height:406,
+			href:'__MODULE__/project/worklog/act/add/id/'+pidd+'/tid/'+tid+'/dates/'+dates,
+			onOpen:function(){
+				cancel['Worklog'] = $(this);
+			},
+			onClose:function(){
+				$("#designIndexList{$uniqid}").datagrid('reload');
+				cancel['Worklog'].dialog('destroy');
+				cancel['Worklog'] = null;
+			}
+		});
+	}
+}
+
+function getDetailWork(id){
+	var isform = $(".add-worklog").length;
+	if(!isform){
+		$("<div/>").dialog({
+			title:'工作日志详情',
+			resizable:true,
+			width:720,
+			height:406,
+			href:'__MODULE__/project/worklog/act/detail/id/'+id,
+			onOpen:function(){
+				cancel['Worklog'] = $(this);
+			},
+			onClose:function(){
+				$("#designIndexList{$uniqid}").datagrid('reload');
+				cancel['Worklog'].dialog('destroy');
+				cancel['Worklog'] = null;
+			}
+		});
+	}
+}
+
+function toDesignSearch(idd){
+	$.messager.progress();
+	var datas = $("#searchForm"+idd).serializeArray();
+	se['year'] = datas[0]['value'];
+	se['month'] = datas[1]['value'];
+	se['type'] = datas[2]['value'];
+	se['status'] = datas[3]['value'];
+	se['pro_id'] = datas[6]['value'];
+	$.post('__URL__/search',datas,function(data){
+		$("#designIndexList{$uniqid}").datagrid('reload');
+	});
+	$.messager.progress('close');
+}
+</script>
+<div class="con" id="designIndexListCon{$uniqid}" onselectstart="return false;" style="-moz-user-select:none;">
+<form id="searchForm{$uniqid}">
+ <table id="designIndexList{$uniqid}"></table>
+</form>
+</div>
+<div id="selectInputDesign{$uniqid}" style="display:none">
+ <span style="margin-right:3px;"></span>
+ <select id="searchYear{$uniqid}" name="year">
+  <option value="0" {$selected}>不限年份</option>
+  <foreach name="year" item="t">
+   <option value="{$t}">{$t}年</option>
+  </foreach>
+ </select>
+ <span style="">/</span>
+ 
+ <select id="searchMonth{$uniqid}" name="month">
+  <option value="0" {$selected}>不限月份</option>
+  <option value="01" {$selected}>01月</option>
+  <option value="02" {$selected}>02月</option>
+  <option value="03" {$selected}>03月</option>
+  <option value="04" {$selected}>04月</option>
+  <option value="05" {$selected}>05月</option>
+  <option value="06" {$selected}>06月</option>
+  <option value="07" {$selected}>07月</option>
+  <option value="08" {$selected}>08月</option>
+  <option value="09" {$selected}>09月</option>
+  <option value="10" {$selected}>10月</option>
+  <option value="11" {$selected}>11月</option>
+  <option value="12" {$selected}>12月</option>
+ </select>
+ 
+ 
+ <select id="searchStatus{$uniqid}" name="status">
+  <option value="0" {$selected}>方案状态</option>
+  <foreach name="status" item="t">
+   <option value="{$t.id}">{$t.text}</option>
+  </foreach>
+ </select>
+
+ <input id="sersSearchDesign{$uniqid}" style="width:190px;" name="pro_id" />
+ 
+ <a href="javascript:void(0);" onclick="javascript:toDesignSearch('{$uniqid}')" class="searchBtn"></a>
+ 
+ <span class="datagrid-btn-separator-nofloat" style="margin-right:2px;"></span>
+</div>

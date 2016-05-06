@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS `#@_sms_baseinfo_table`;
+CREATE TABLE `#@_sms_baseinfo_table` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sms_id` int(11) NOT NULL DEFAULT '0',
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sms_id` (`sms_id`) USING BTREE
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+REPLACE INTO `#@_sms_baseinfo_table` VALUES ('1','1','admin设置了您为项目：“<a href=\"javascript:showTab(\'项目-退货政策\',1)&#59\">退货政策</a>” 的项目负责人，点击项目名称查看更多详情。');
+REPLACE INTO `#@_sms_baseinfo_table` VALUES ('2','2','admin创建了项目：“<a href=\"javascript:showTab(\'项目-退货政策\',1)&#59\">退货政策</a>”，点击项目名称查看更多详情。');

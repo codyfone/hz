@@ -1,0 +1,166 @@
+<script language="javascript">
+  var act = '{$act}';
+  $(function () {
+    $("#addFormUser{$uniqid}").form('load', {
+      'company': '<?php echo $info["company"] ?>',
+      'itype': '<?php echo $info["itype"] ?>',
+      'taxcer_no': '<?php echo $info["taxcer_no"] ?>',
+      'bank': '<?php echo $info["bank"] ?>',
+      'account_no': '<?php echo $info["account_no"] ?>',
+      'register_addr': '<?php echo $info["register_addr"] ?>',
+      'telephone': '<?php echo $info["telephone"] ?>',
+      'licence_copy': '<?php echo $info["licence_copy"] ?>',
+      'taxcer_copy': '<?php echo $info["taxcer_copy"] ?>',
+      'taxpayer_copy': '<?php echo $info["taxpayer_copy"] ?>'
+    });
+  });
+
+  var idd = '';
+  function onSubmitUser(idd) {
+    $.messager.progress();
+    var ids = $("#ids" + idd).val();
+    $("#addFormUser" + idd).form('submit', {
+      url: '__URL__/invoice/act/add/go/1/id/' + ids,
+      onSubmit: function () {
+        var isValid = $(this).form('validate');
+        if (!isValid) {
+          $.messager.progress('close');
+        }
+        return isValid;
+      },
+      success: function (data) {
+        $.messager.progress('close');
+        console.log(data);
+        if (data == 1) {
+          $.messager.alert('提示', '新增数据成功！', 'info', function () {
+            var sa = '{$Think.config.SUBMIT_ACTION}';
+            $("#Users").datagrid('reload');
+            if (sa == 1) {
+              cancel['User'].dialog('close');
+              cancel['User'] = null;
+            }
+          });
+        } else if (data == 0) {
+          $.messager.alert('提示', '新增数据失败！', 'warning');
+        } else if (data == 2) {
+          $.messager.alert('提示', '无法发送邮件，请检查邮箱设置！', 'warning');
+        } else {
+          $.messager.alert('提示', '您没有新增权限！', 'warning', function () {
+            var sa = '{$Think.config.SUBMIT_ACTION}';
+            if (sa == 1) {
+              cancel['User'].dialog('close');
+              cancel['User'] = null;
+            }
+          });
+        }
+      }
+    });
+  }
+
+  function onUploadUser(idd) {
+    $.messager.progress();
+    var ids = $("#ids" + idd).val();
+    $("#addFormUser" + idd).form('submit', {
+      url: '__URL__/invoice/act/edit/go/1/id/' + ids,
+      onSubmit: function () {
+        var isValid = $(this).form('validate');
+        if (!isValid) {
+          $.messager.progress('close');
+        }
+        return isValid;
+      },
+      success: function (data) {
+        $.messager.progress('close');
+        console.log(data);
+        if (data == 1) {
+          $.messager.alert('提示', '更新数据成功！', 'info', function () {
+            var sa = '{$Think.config.SUBMIT_ACTION}';
+            $("#Users").datagrid('reload');
+            if (sa == 1) {
+              cancel['User'].dialog('close');
+              cancel['User'] = null;
+            }
+          });
+        } else if (data == 0) {
+          $.messager.alert('提示', '更新数据失败！', 'warning');
+        } else {
+          $.messager.alert('提示', '您没有修改权限！', 'warning', function () {
+            var sa = '{$Think.config.SUBMIT_ACTION}';
+            if (sa == 1) {
+              cancel['User'].dialog('close');
+              cancel['User'] = null;
+            }
+          });
+        }
+      }
+    });
+  }
+
+  function onResetUser(idd) {
+    cancel['User'].dialog('close');
+    cancel['User'] = null;
+  }
+</script>
+<div class="con-tb">
+  <form id="addFormUser{$uniqid}" method="post" enctype="multipart/form-data">
+    <table class="infobox" width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="23%"><label for="company">发票抬头</label></td>
+        <td width="77%"><input name="company" class="easyui-validatebox" size="22" data-options="required:true" /><input id="ids{$uniqid}" type="hidden" value="{$id}" /></td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="status">发票类型</label></td>
+        <td width="77%">
+          <select class="easyui-combobox" name="itype" data-options="editable:false">
+            <option value="0">增值税专用发票</option>
+            <option value="1">增值税普通发票</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="taxcer_no">税务登记证号</label></td>
+        <td width="77%"> <input name="taxcer_no" type="text" class="easyui-validatebox" size="22" data-options="required:true" placeholder="请填写税务登记证上的编号"/></td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="bank">基本开户银行名称</label></td>
+        <td width="77%"> <input name="bank" type="text" class="easyui-validatebox" size="22" data-options="required:true" placeholer="请填写您开户许可证上的开户银行" /></td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="account_no">基本开户账号</label></td>
+        <td width="77%"><input name="account_no" type="text" class="easyui-validatebox" value="" size="22" data-options="required:true" placeholder="请填写您开户许可证上的银行账号" /></td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="register_addr">注册场所地址</label></td>
+        <td width="77%"><input name="register_addr" type="text" class="easyui-validatebox" value="" size="42" data-options="required:true" /></td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="telephone">注册固定电话</label></td>
+        <td width="77%"><input name="telephone" type="text" class="easyui-validatebox" value="" size="22" data-options="required:true,validType:'Tel'" /></td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="vals">营业执照复印件</label></td>
+        <td width="77%">
+          <span><input type="file" name="new_licence_copy" id="new_licence_copy" class="file" /><input type="hidden" name="licence_copy" id="licence_copy" value="" /></span>
+      <if condition="$info['licence_copy'] != ''"><p><a href="{$info['licence_copy']}" target="_blank"><img src="{$info['licence_copy']}" height="100"></a></p></if>
+      </td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="vals">税务登记复印件</label></td>
+        <td width="77%">
+          <span><input type="file" name="new_taxcer_copy" id="new_taxcer_copy" class="file" /><input type="hidden" name="taxcer_copy" id="taxcer_copy" value="" /></span>
+      <if condition="$info['taxcer_copy'] != ''"><p><a href="{$info['taxcer_copy']}" target="_blank"><img src="{$info['taxcer_copy']}" height="100"></a></p></if>
+      </td>
+      </tr>
+      <tr>
+        <td width="23%"><label for="vals">一般纳税人资格认证复印件</label></td>
+        <td width="77%">
+          <span><input type="file" name="new_taxpayer_copy" id="new_taxpayer_copy" class="file" /><input type="hidden" name="taxpayer_copy" id="taxpayer_copy" value="" /></span>
+      <if condition="$info['taxpayer_copy'] != ''"><p><a href="{$info['taxpayer_copy']}" target="_blank"><img src="{$info['taxpayer_copy']}" height="100"></a></p></if>
+      </td>
+      </tr>
+      <tr>
+        <td height="38" colspan="2" align="center"><if condition="$act=='add'"><a href="javascript:void(0);" onclick="javascript:onSubmitUser('{$uniqid}')" id="su" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a><else /><a href="javascript:void(0);" onclick="javascript:return onUploadUser('{$uniqid}')" id="sue" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a></if> &nbsp; <a href="javascript:void(0);" onclick="javascript:onResetUser('{$uniqid}')" id="re" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a></td>
+      </tr>
+    </table>
+  </form>
+</div>
