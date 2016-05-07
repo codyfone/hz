@@ -49,7 +49,7 @@
 <?php if ($modelid == 1 || $modelid == 3) { ?>
   //        $("#nickname").formValidator({onShow: "请输入名称", onFocus: "名称应该为2-20位之间"}).inputValidator({min: 2, max: 80, onError: "名称应该为2-80位之间"}).regexValidator({regExp: "ps_nickname", dataType: "enum", onError: "名称称格式错误"}).ajaxValidator({
   //          type: "get",
-  //          url: "<?= U('member/checkDenyNickname') ?>",
+  //          url: "<?= U('Member/checkDenyNickname') ?>",
   //          dataType: "html",
   //          async: 'false',
   //          success: function (data) {
@@ -76,7 +76,7 @@
         });
         $("#mobile_verify").formValidator({onShow: "请输入手机收到的验证码", onFocus: "请输入手机收到的验证码"}).inputValidator({min: 1, onError: "请输入手机收到的验证码"}).ajaxValidator({
           type: "get",
-          url: "<?= U('sms/id_code') ?>",
+          url: "<?= U('Sms/id_code') ?>",
           dataType: "html",
           async: "false",
           success: function (data) {
@@ -114,9 +114,9 @@
               <div class="register_telephone register_tab">
                 <div class="form-group regtype">
                   <input type="hidden" modelid="{$modelid}">
-                  <a <?php if ($modelid == 1) echo 'class="current"' ?> href="{:U('member/register',['type'=>1])}">展商</a>
-                  <a <?php if ($modelid == 2) echo 'class="current"' ?>href="{:U('member/register',['type'=>2])}">设计师</a>
-                  <a <?php if ($modelid == 3) echo 'class="current"' ?>href="{:U('member/register',['type'=>3])}">工厂</a>
+                  <a <?php if ($modelid == 1) echo 'class="current"' ?> href="{:U('Member/register',['type'=>1])}">展商</a>
+                  <a <?php if ($modelid == 2) echo 'class="current"' ?>href="{:U('Member/register',['type'=>2])}">设计师</a>
+                  <a <?php if ($modelid == 3) echo 'class="current"' ?>href="{:U('Member/register',['type'=>3])}">工厂</a>
                 </div>
                 <?php if ($modelid == 1 || $modelid == 3) { ?>
                   <div class="form-group"><input class="input_public" id="nickname" type="text" name="nickname" value="" placeholder="请输入公司名称"></div>

@@ -21,13 +21,13 @@
       </div>
       <div class="member_right fr">
         <div class="m_head">
-          <h3>订单信息</h3>
+          <h3>最新订单</h3>
         </div>
         <table class="m_table" style="width:100%">
-          <thead><tr><th width="70">订单号</th><th>展会</th><th width="70">展位面积</th><th width="85">截稿日期</th><th width="70">订单状态</th><th width="160">稿件统计</th><th width="60"></th></tr></thead>
+          <thead><tr><th width="70">订单号</th><th>展商</th><th>展会</th><th width="70">展位面积</th><th width="85">截稿日期</th><th width="60"></th></tr></thead>
           <tbody>
             <?php foreach ($new_info['rows'] as $v) { ?>
-            <tr><td class="red">{$v['t1_code']}</td><td><?php if ($v['t1_exhibitin_id'] != 0) { ?><a href="{:U('Zhanhui/view',['id'=>$v['t1_exhibitin_id']])}" tareget="_blank">{$v['t1_exhibition']}</a><?php } else { ?>{$v['t1_exhibition']}<?php } ?></td><td>{$v['t1_floor_area']}m2</td><td>{$v['t2_enddate']}</td><td><?= $v['t1_old_check'] == 0 ? '<span class="red">待审核</span>':$v['t1_new_pass']; ?></td><td>意向:<span class="red"><?= $v['design_count']; ?></span>， 完成：<span class="red"><?= $v['design_comple']; ?></span></td><td><a href="{:U('Exhibitor/addProject',['act'=>'edit','id'=>$v['id']])}">详情</a></td></tr>
+              <tr><td class="red">{$v['t1_code']}</td><td><?php if ($v['t1_exhibitin_id'] != 0) { ?><a href="{:U('Designer/index',['id'=>$v['t1_mid']])}" tareget="_blank">{$v['t1_company']}</a><?php } else { ?>{$v['t1_company']}<?php } ?></td><td><?php if ($v['t1_exhibitin_id'] != 0) { ?><a href="{:U('Zhanhui/view',['id'=>$v['t1_exhibitin_id']])}" tareget="_blank">{$v['t1_exhibition']}</a><?php } else { ?>{$v['t1_exhibition']}<?php } ?></td><td>{$v['t1_floor_area']}m2</td><td>{$v['t2_enddate']}</td><td><a href="{:U('Designer/showProject',['id'=>$v['id']])}">详情</a></td></tr>
             <?php } ?>
           </tbody>
         </table>

@@ -24,7 +24,7 @@
       //三级联动地区
       $(function () {
         var $ld5 = $(".pc-select-areaid");
-        $ld5.ld({ajaxOptions: {"url": "<?= U('citys/list_json') ?>"}, defaultParentId: 0, style: {"width": 120}})
+        $ld5.ld({ajaxOptions: {"url": "<?= U('Citys/list_json') ?>"}, defaultParentId: 0, style: {"width": 120}})
         var ld5_api = $ld5.ld("api");
         ld5_api.selected();
         $ld5.bind("change", onchange);
@@ -51,9 +51,9 @@
       </div>
       <div class="member_right fr">
         <div class="m_head"><div class="m_tab">
-          <a href="{:U('exhibitor/baseinfo')}">基本信息</a>
+          <a href="{:U('Exhibitor/baseinfo')}">基本信息</a>
           <a class="current" href="@">修改密码</a>
-          <a href="{:U('exhibitor/avatar')}">修改头像</a>
+          <a href="{:U('Exhibitor/avatar')}">修改头像</a>
           </div></div>
         <div class="m_body">
           <form id="form1" method="post" action="__SELF">

@@ -22,8 +22,8 @@
       <div class="member_right fr">
         <div class="m_head">
           <div class="m_tab">
-          <a href="{:U('exhibitor/baseinfo')}">基本信息</a>
-          <a href="{:U('exhibitor/editPasswd')}">修改密码</a>
+          <a href="{:U('Exhibitor/baseinfo')}">基本信息</a>
+          <a href="{:U('Exhibitor/editPasswd')}">修改密码</a>
           <a class="current" href="#">修改头像</a>
           </div>
         </div>

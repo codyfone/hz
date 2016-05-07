@@ -4,7 +4,7 @@
     <meta charset="utf-8" >
     <meta keywords="<?= C('SEO_KEYWORDS'); ?>">
     <meta description="<?= C('SEO_DESCRIPTION'); ?>">
-    <title>基本信息修改-<?= C('SEO_TITLE'); ?></title>
+    <title>项目详情-<?= C('SEO_TITLE'); ?></title>
     <link href="__PUBLIC__/css/CSS.css" rel="stylesheet" type="text/css">
     <link href="__PUBLIC__/css/user.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
@@ -21,22 +21,17 @@
       </div>
       <div class="member_right fr">
         <div class="m_head">
-          <h3>最新订单</h3>
+          <h3>项目详情</h3>
         </div>
-        <table class="m_table" style="width:100%">
-          <thead><tr><th width="70">订单号</th><th>展商</th><th>展会</th><th width="70">展位面积</th><th width="85">截稿日期</th><th width="60"></th></tr></thead>
-          <tbody>
-            <?php foreach ($new_info['rows'] as $v) { ?>
-              <tr><td class="red">{$v['t1_code']}</td><td><?php if ($v['t1_exhibitin_id'] != 0) { ?><a href="{:U('designer/index',['id'=>$v['t1_mid']])}" tareget="_blank">{$v['t1_company']}</a><?php } else { ?>{$v['t1_company']}<?php } ?></td><td><?php if ($v['t1_exhibitin_id'] != 0) { ?><a href="{:U('zhanhui/view',['id'=>$v['t1_exhibitin_id']])}" tareget="_blank">{$v['t1_exhibition']}</a><?php } else { ?>{$v['t1_exhibition']}<?php } ?></td><td>{$v['t1_floor_area']}m2</td><td>{$v['t2_enddate']}</td><td><a href="{:U('designer/showProject',['id'=>$v['id']])}">详情</a></td></tr>
-            <?php } ?>
-          </tbody>
-        </table>
+        <div class="m_body">
+          <p style="margin-bottom: 10px;font-size:24px;width:820px;"><a class="btn-yellow fr" href="{:U('Designer/addDesign',['act'=>'add','pid'=>$info['id']])}">我要投稿</a><span class="red">[设计需求]</span> <?= $info['company'] ?></p>
+          <include file="member:_projectInfo" />
+        </div>
       </div>
       <div class="clear"></div>
     </div>
 
   </div>
-
   <include file="index:_foot" />
 </body>
 </html>

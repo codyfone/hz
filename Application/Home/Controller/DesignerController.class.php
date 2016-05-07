@@ -180,7 +180,7 @@ class DesignerController extends HomeController {
    * 最新项目
    */
 
-  public function project($json = NULL, $method = NULL) {
+  public function projectList($json = NULL, $method = NULL) {
 
     //main
     if (!is_int((int) $json)) {
@@ -291,7 +291,7 @@ class DesignerController extends HomeController {
     }
   }
 
-  public function showProject($id) {
+  public function project($id) {
     $map['id'] = array('eq', $id);
     $project = D('Project');
     $info = $project->relation(true)->where($map)->find();
@@ -308,7 +308,7 @@ class DesignerController extends HomeController {
    * @param $method  为1时，单独输出记录数
    * @examlpe
    */
-  public function design($json = NULL, $method = NULL) {
+  public function designList($json = NULL, $method = NULL) {
 
     //main
     if (!is_int((int) $json)) {
@@ -493,15 +493,13 @@ class DesignerController extends HomeController {
     }
   }
 
-  public function addDesign($act, $go = 0, $id = 0, $tid = 0) {
+  public function design($act, $go = 0, $pid, $id = 0, $tid = 0) {
     $Log = A('Log', 'Helper');
     $Sms = A('Sms', 'Helper');
 
     $id = intval($id);
-    $userid = $_SESSION['login']['se_id'];
-    $username = $_SESSION['login']['se_user'];
     if (IS_POST) {
-      $pro_id = I('pid');
+      $pro_id = $pid;
       $design = D('Design');
       switch ($act) {
         case 'add':
@@ -594,7 +592,7 @@ class DesignerController extends HomeController {
 //            }
 //            //$Files->actFiles($pro_id,$des_id,1,$data['_parentId']);
 
-           if (IS_AJAX)
+            if (IS_AJAX)
               echo 1;
             else
               $this->success('方案修改成功');
@@ -647,13 +645,11 @@ class DesignerController extends HomeController {
 //              'notes' => $designbame,
 //            );
 //            $Log->actLog($log_data, 2, 3);
-
 //            $sms_data = array(
 //              'title' => '项目：' . $proname . ' 方案刪除通知',
 //              'description' => $username . '刪除了方案：“' . $designbame . '”。',
 //            );
 //            $Sms->sendsms($sms_data, $mid);
-
             //$Files->actFiles(0,$id,2);
 
             echo 1;

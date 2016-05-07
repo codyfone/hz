@@ -76,8 +76,8 @@
       <div class="member_right fr">
         <div class="m_head"><div class="m_tab">
           <a class="current" href="#">基本信息</a>
-          <a href="{:U('designer/editPasswd')}">修改密码</a>
-          <a href="{:U('designer/avatar')}">修改头像</a>
+          <a href="{:U('Designer/editPasswd')}">修改密码</a>
+          <a href="{:U('Designer/avatar')}">修改头像</a>
           </div></div>
         <div class="m_body">
           <form id="form1" method="post" action="">

@@ -16,14 +16,14 @@
       <dt>地区:</dt>
       <dd class="current"><a href="">不限</a></dd>
       <?php foreach ($areas as $area) { ?>
-        <dd><a href="<?= U('zhanguan/index', array('areaid' => $area['id'])) ?>"><?= $area['name'] ?></a></dd>
+        <dd><a href="<?= U('Zhanguan/index', array('areaid' => $area['id'])) ?>"><?= $area['name'] ?></a></dd>
       <?php } ?>
     </dl>
     <dl>
       <dt>等级:</dt>
       <dd class="current"><a href="">不限</a></dd>
       <?php foreach ($areas as $area) { ?>
-        <dd><a href="<?= U('zhanguan/index', array('areaid' => $area['id'])) ?>"><?= $area['name'] ?></a></dd>
+        <dd><a href="<?= U('Zhanguan/index', array('areaid' => $area['id'])) ?>"><?= $area['name'] ?></a></dd>
       <?php } ?>
     </dl>
   </div>
