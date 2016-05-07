@@ -47,14 +47,17 @@ class MemberController extends HomeController {
       $uid = $User->register($username, $password, $email, $mobile);
       if (0 < $uid) { //注册成功
         //TODO: 发送验证邮件
+        $data['nickname'] = $nickname ? $nickname : $username;
         if ($type == 2) {
           $data = ['modelid' => 2, 'groupid' => 6];
+          M('Member_designer')->add(['userid'=>$uid,'name'=>$data['nickname']]);
         } else if ($type == 3) {
           $data = ['modelid' => 3, 'groupid' => 12];
+          M('Member_factory')->add(['userid'=>$uid,'name'=>$data['nickname']]);
         } else {
           $data = ['modelid' => 1, 'groupid' => 11];
+          M('Member_exhibitor')->add(['userid'=>$uid,'name'=>$data['nickname']]);
         }
-        $data['nickname'] = $nickname ? $nicknmae : $username;
         // $data['status'] = 
         M('Member')->where('id=' . $uid)->save($data);
         $this->success('注册成功！', U('login'));
