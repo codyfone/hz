@@ -58,7 +58,7 @@ a:hover {
 .m_body{padding-top:20px;border-top:2px solid #ec5051;}
 .m_zjdd_table,.m_qqsc_table{width:930px;}
 
-.m_table td{border:1px solid #ccc;height:30px;line-height:30px;text-align:center;}
+.m_table td{border:1px solid #ccc;height:30px;line-height:30px;}
 .m_table .request,
 .red{color:#ec5051;font-style: normal;}
 .yellow{color:#ff9c03;}

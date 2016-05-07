@@ -1,8 +1,8 @@
 <div class="member_list">
   <div class="member_list_title"><span>订单中心</span></div>
   <ul>
-    <li><a href="{:U('Designer/designlist')}">我的方案</a></li>
-     <li><a href="{:U('Designer/project')}">最新订单</a></li>
+    <li><a href="{:U('Designer/designList')}">我的方案</a></li>
+     <li><a href="{:U('Designer/projectList')}">最新订单</a></li>
   </ul>
 </div>
 <div class="member_list">

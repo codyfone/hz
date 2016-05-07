@@ -21,10 +21,17 @@
       </div>
       <div class="member_right fr">
         <div class="m_head">
-          <h3>项目详情</h3>
+          <div class="m_tab">
+            <a class="current" href="#">项目详情</a>
+            <?php if ($des_id) { ?>
+              <a href="<?= U('Designer/design', ['act' => 'edit', 'id' => $des_id]) ?>">我的方案</a>
+            <?php } else { ?>
+              <a href="<?= U('Designer/design', ['act' => 'add', 'pid' => $id]) ?>">我要投稿</a>
+            <?php } ?>
+          </div>
         </div>
         <div class="m_body">
-          <p style="margin-bottom: 10px;font-size:24px;width:820px;"><a class="btn-yellow fr" href="{:U('Designer/addDesign',['act'=>'add','pid'=>$info['id']])}">我要投稿</a><span class="red">[设计需求]</span> <?= $info['company'] ?></p>
+          <p style="margin-bottom: 10px;font-size:24px;width:820px;"> <?php if (!$des_id) { ?><a class="btn-yellow fr" href="<?= U('Designer/design', ['act' => 'add', 'pid' => $id]) ?>">我要投稿</a><?php }?><span class="red">[设计需求]</span> <?= $info['company'] ?></p>
           <include file="member:_projectInfo" />
         </div>
       </div>

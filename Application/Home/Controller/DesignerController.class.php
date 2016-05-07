@@ -293,8 +293,9 @@ class DesignerController extends HomeController {
 
   public function project($id) {
     $map['id'] = array('eq', $id);
-    $project = D('Project');
-    $info = $project->relation(true)->where($map)->find();
+    $info = D('Project')->relation(true)->where($map)->find();
+    $des_id = M('Design')->where('pro_id=' . intval($id))->getField('id');
+    $this->assign('des_id', $des_id);
     $this->assign('id', $id);
     $this->assign('act', 'edit');
     $this->assign('info', $info);
@@ -493,13 +494,13 @@ class DesignerController extends HomeController {
     }
   }
 
-  public function design($act, $go = 0, $pid, $id = 0, $tid = 0) {
+  public function design($act, $pid = 0, $id = 0) {
     $Log = A('Log', 'Helper');
     $Sms = A('Sms', 'Helper');
-
+    $pid = intval($pid);
     $id = intval($id);
     if (IS_POST) {
-      $pro_id = $pid;
+
       $design = D('Design');
       switch ($act) {
         case 'add':
@@ -507,19 +508,18 @@ class DesignerController extends HomeController {
           $data['mid'] = $this->mid;
           $data['uptime'] = date("Y-m-d h:i:s");
           $data['main'] = array(
-            'pro_id' => $pro_id,
+            'pro_id' => $pid,
           );
           $data['baseinfo'] = array(
             'content' => I('content', '', false),
           );
-          //dump($data);exit;
           $add = $design->relation(true)->add($data);
           if ($add > 0) {
 //            $linkage = M('Linkage');
 //            $statusname = $linkage->where('id=' . $data['status'])->getField('text');
 //            $notes = '状态为：' . $statusname;
 //            $log_data = array(
-//              'pro_id' => $pro_id,
+//              'pro_id' => $pid,
 //              'des_id' => $add,
 //              'usage' => '无',
 //              'status' => $data['status'],
@@ -529,19 +529,19 @@ class DesignerController extends HomeController {
 //            $Log->actLog($log_data, 2);
 //
 //            $project = M('Project');
-//            $pro = $project->field('company,exhibition')->where('id=' . $pro_id)->find();
+//            $pro = $project->field('company,exhibition')->where('id=' . $pid)->find();
 //            $proname = $pro['company'] . '--' . $pro['exhibition'];
-//            $mid = $project->where('id=' . $pro_id)->getField('mid');
+//            $mid = $project->where('id=' . $pid)->getField('mid');
 //            $sms_data = array(
 //              'title' => '设计方案：' . $data['title'] . ' 代提交通知。',
 //              'description' => $username . '为您提交了设计方案：“<a href="#" target="_blank">' . $proname . '</a>” -> “<a href="#" target="_blank">' . $data['title'] . '</a>” 的方案负责人，点击方案名称查看更多详情。',
 //            );
 //            $Sms->sendsms($sms_data, $mid);
-            //$Files->actFiles($pro_id,$add,1,$data['_parentId']);
+            //$Files->actFiles($pid,$add,1,$data['_parentId']);
             if (IS_AJAX)
               echo 1;
             else
-              $this->success('方案添加成功');
+              $this->success('方案添加成功', U('desig', ['act' => 'edit', 'id' => $add]));
           } else {
             if (IS_AJAX)
               echo 0;
@@ -553,30 +553,26 @@ class DesignerController extends HomeController {
         case 'edit':
           $data = $design->create();
           $des_id = I('des_id');
-          $pro_id = $data['pro_id'];
+          $pid = $data['pro_id'];
           $data['uptime'] = date("Y-m-d h:i:s");
           $data['baseinfo'] = array(
             'content' => I('content', '', false),
           );
           unset($data['_parentId'], $data['pro_id']);
-          //dump($data);exit;
-          $map['id'] = array('eq', $des_id);
-          $check = $design->where($map)->getField('check');
-          if ($check) {
-            echo 2;
-            exit;
-          }
+//          dump($data);exit;
+          $map['id'] = array('eq', $id);
+          $map['mid'] = array('eq', $this->mid);
           $edit = $design->relation(true)->where($map)->save($data);
           if ($edit !== false) {
 //            $project = M('Project');
-//            $pro = $project->field('company,exhibition')->where('id=' . $pro_id)->find();
+//            $pro = $project->field('company,exhibition')->where('id=' . $pid)->find();
 //            $proname = $pro['company'] . '--' . $pro['exhibition'];
 //            if ($edit == 1) {
 //              $linkage = M('Linkage');
 //              $statusname = $linkage->where('id=' . $data['status'])->getField('text');
 //              $notes = '状态为：' . $statusname;
 //              $log_data = array(
-//                'pro_id' => $pro_id,
+//                'pro_id' => $pid,
 //                'des_id' => $des_id,
 //                'usage' => '五',
 //                'status' => $data['status'],
@@ -586,11 +582,11 @@ class DesignerController extends HomeController {
 //
 //              $sms_data = array(
 //                'title' => '设计方案：' . $proname . ' 方案更新通知',
-//                'description' => $username . '更新了设计方案：“<a href="javascript:showTab(\'项目-' . $proname . '\',' . $pro_id . ',' . $des_id . ');">' . $data['title'] . '</a>”，点击方案名称查看更多详情。',
+//                'description' => $username . '更新了设计方案：“<a href="javascript:showTab(\'项目-' . $proname . '\',' . $pid . ',' . $des_id . ');">' . $data['title'] . '</a>”，点击方案名称查看更多详情。',
 //              );
 //              $Sms->sendsms($sms_data, $data['mid']);
 //            }
-//            //$Files->actFiles($pro_id,$des_id,1,$data['_parentId']);
+//            //$Files->actFiles($pid,$des_id,1,$data['_parentId']);
 
             if (IS_AJAX)
               echo 1;
@@ -611,16 +607,16 @@ class DesignerController extends HomeController {
           $replymain = M('Reply_main_table');
           $project = M('Project');
           $map['id'] = array('eq', $id);
-          $pro_id = I('pid');
+          $pid = I('pid');
           $check = $design->where($map)->getField('check');
           if ($check) {
             echo 2;
             exit;
           }
 
-          $pro = $project->field('company, exhibition')->where('id=' . $pro_id)->find();
+          $pro = $project->field('company, exhibition')->where('id=' . $pid)->find();
           $proname = $pro['company'] . '--' . $pro['exhibition'];
-          $designbame = $design->where($map)->getField('title');
+          $designname = $design->where($map)->getField('title');
           $mid = $design->where($map)->getField('mid');
 
           $del = $design->relation(true)->where($map)->delete();
@@ -638,16 +634,16 @@ class DesignerController extends HomeController {
             $replymain->where('`des_id`=' . $id)->delete();
 
 //            $log_data = array(
-//              'pro_id' => $pro_id,
+//              'pro_id' => $pid,
 //              'des_id' => $id,
 //              'usage' => '无',
 //              'status' => 0,
-//              'notes' => $designbame,
+//              'notes' => $designname,
 //            );
 //            $Log->actLog($log_data, 2, 3);
 //            $sms_data = array(
 //              'title' => '项目：' . $proname . ' 方案刪除通知',
-//              'description' => $username . '刪除了方案：“' . $designbame . '”。',
+//              'description' => $username . '刪除了方案：“' . $designname . '”。',
 //            );
 //            $Sms->sendsms($sms_data, $mid);
             //$Files->actFiles(0,$id,2);
@@ -659,13 +655,93 @@ class DesignerController extends HomeController {
           break;
       }
     } else {
+      $map['id'] = array('eq', $pid);
+      $project = D('Project')->relation(true)->where($map)->find();
       if ($act == 'edit') {
         $design = D('Design');
-        $map['id'] = array('eq', $id);
+        $map['id'] = ['eq', $id];
+        $map['mid'] = ['eq', $this->mid];
         $info = $design->relation(true)->where($map)->find();
-        if ($info['mid'] != $this->mid) {
+        if (!$info) {
           $this->error('方案不存在');
         }
+
+        $files = D('Files_table');
+        $map2 = [
+          'des_id' => ['eq', $id],
+          'mid' => ['eq', $this->mid],
+        ];
+        $filesList = $files->relation(true)->where($map2)->select();
+        $this->assign('filesList', $filesList);
+      } else {
+        $info = [];
+        $info['title'] = $project['company'] . '--' . $project['exhibition'] . ' 展装设计方案';
+        $info['pro_id'] = intval($pid);
+      }
+      $this->assign('info', $info);
+      $this->assign('uniqid', uniqid());
+      $this->assign('project', $project);
+      $this->assign('act', $act);
+      $this->assign('id', $id);
+      $this->display();
+    }
+  }
+
+  /**
+   * 添加项目附件
+   * @param $id  项目ID
+   * @param $tid  任务D
+   * @param $paid  父级ID
+   * @param $go  为1时，获取post
+   * @param $act  为1时：新增数据、为2时：编辑数据、为3时：刪除数据
+   * @examlpe 
+   */
+  public function file($act, $des_id = 0) {
+
+    $Log = A('Log', 'Helper');
+    $Files = A('Files', 'Designer');
+    //main
+    $des_id = intval($des_id);
+    if (IS_POST) {
+      switch ($act) {
+        case 'add':
+          $add = $Files->add($this->mid, $des_id); 
+          if ($add > 0) {
+            $this->success('附件添加成功', U('design', ['act' => 'edit', 'id' => $des_id]));
+          } else {
+            $this->error('附件添加失败', U('design', ['act' => 'edit', 'id' => $des_id]));
+          }
+          break;
+
+        case 'edit':
+          $files_id = I('files_id');
+          $edit = $Files->edit($this->mid, $des_id, $files_id);
+          if ($edit === true) {
+            $this->success('附件更新成功', U('design', ['act' => 'edit', 'id' => $des_id]));
+          } else {
+            $this->error('附件更新失败', U('design', ['act' => 'edit', 'id' => $des_id]));
+          }
+          break;
+
+        case 'del':
+          $files_id = intval(I('post.files_id'));
+          $des_id = intval(I('post.des_id'));
+          $del = $Files->del($this->mid, $des_id, $files_id);
+          if ($del === true) {
+            echo 1;
+          } else {
+            echo 0;
+          }
+          break;
+      }
+    } else {
+      if ($act == 'edit') {
+        $files = D('Files_table');
+        $map = [];
+        $map['id'] = ['eq', $files_id];
+        $map['mid'] = ['eq', $this->mid];
+
+        $info = $files->relation(true)->where($map)->find();
         $this->assign('info', $info);
       } else {
         
@@ -673,8 +749,6 @@ class DesignerController extends HomeController {
       $this->assign('uniqid', uniqid());
       $this->assign('act', $act);
       $this->assign('id', $id);
-      $this->assign('tid', $tid);
-      //dump($tid);exit;
       $this->display();
     }
   }
@@ -684,6 +758,10 @@ class DesignerController extends HomeController {
    */
 
   public function verify_email() {
+    
+  }
+
+  public function getFiles() {
     
   }
 

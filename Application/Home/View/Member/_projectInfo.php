@@ -159,7 +159,7 @@ if ($info['baseinfo']['taboo_color']) {
       ?>
     </td>
     <td height="26"><div align="center">线条要求：</div></td>
-    <td colspan="2">
+    <td>
       <?php
       $arr = ['0' => '弧线形', '1' => '直线形', '2' => '圆形', '3' => '综合形',];
       echo $arr[$info['baseinfo']['line_style']];
