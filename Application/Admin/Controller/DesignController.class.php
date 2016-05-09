@@ -45,7 +45,7 @@ class DesignController extends Controller {
     $tinfo = $result->table($Project_table . ' as t1')->where('id in (' . $ids . ') and round(' . $comple . '/' . $count . '*100,0)<100')->getField('count(id)');
 
     $ninfo = $notice->where('status>0')->order('status asc,addtime desc')->select();
-    $design_status = $App->getJson('renwuzhuangtai', '/Linkage');
+    $design_status = $App->getJson('fanganzhuangtai', '/Linkage');
     $this->assign('userid', $userid);
     $this->assign('ninfo', $ninfo);
     $this->assign('protype', $protype);
@@ -307,7 +307,7 @@ class DesignController extends Controller {
         date("Y", strtotime("-5 year")), date("Y", strtotime("-4 year")), date("Y", strtotime("-3 year")), date("Y", strtotime("-2 year")), date("Y", strtotime("-1 year")), date("Y"), date("Y", strtotime("+1 year")), date("Y", strtotime("+2 year")), date("Y", strtotime("+3 year")), date("Y", strtotime("+4 year")), date("Y", strtotime("+5 year")), date("Y", strtotime("+6 year")),
       );
 
-      $status = $App->getJson('renwuzhuangtai', '/Linkage');
+      $status = $App->getJson('fanganzhuangtai', '/Linkage');
 
       $this->assign('nowyear', date("Y"));
       $this->assign('nowmonth', date("m"));
