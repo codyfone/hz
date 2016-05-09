@@ -1431,7 +1431,7 @@ class ProjectController extends Controller {
             $path = APP_PATH . '/' . $upload . '/' . $oldpath;
             $sys->delFile($path);
             $log_data = array(
-              'pro_id' => $pro_id,
+              'pro_id' => $pro_id ? $pro_id : 0,
               'files_id' => $files_id,
               'usage' => '无',
               'status' => 0,

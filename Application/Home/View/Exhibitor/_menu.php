@@ -1,8 +1,8 @@
 <div class="member_list">
   <div class="member_list_title"><span>订单中心</span></div>
   <ul>
-    <li><a href="{:U('Exhibitor/addProject')}">发布需求</a></li>
-    <li><a href="{:U('Exhibitor/project')}">我的订单</a></li>
+    <li><a href="{:U('Exhibitor/project')}">发布需求</a></li>
+    <li><a href="{:U('Exhibitor/projectList')}">我的订单</a></li>
   </ul>
 </div>
 <div class="member_list">

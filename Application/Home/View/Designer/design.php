@@ -22,13 +22,13 @@
             alert(msg)
           }, inIframe: true});
       });
-      function delFile(pid, id) {
+      function delFile(des_id, id) {
         if (confirm("确定要删除附件?")) {
-          $.post('<?= U('Designer/file') ?>', {act: 'del', files_id: id}, function (data) {
+          $.post('<?= U('Designer/file') ?>', {act: 'del', des_id: des_id, files_id: id}, function (data) {
             console.log(data);
-            if(data==1){
-              $('#file_'+id).remove();
-            }else{
+            if (data == 1) {
+              $('#file_' + id).remove();
+            } else {
               alert('删除失败');
             }
           });
@@ -53,22 +53,41 @@
             <?php if ($info['id']) { ?>
               <a class="current" href="<?= U('Designer/design', ['act' => 'edit', 'id' => $info['id']]) ?>">我的方案</a>
             <?php } else { ?>
-              <a class="current" href="<?= U('Designer/design', ['act' => 'add', 'pid' => $info['pro_id']]) ?>">我要投稿</a>
+              <a class="current" href="<?= U('Designer/design', ['act' => 'add', 'des_id' => $info['pro_id']]) ?>">我要投稿</a>
             <?php } ?>
           </div>
         </div>
         <div class="m_body">
           <?php if ($act == 'edit') { ?>
             <script>
-              $(function () {
-                $("#edit-form").click(function () {
-                  $("#form-info").hide();
-                  $("#form-box").show();
-                  return false;
+              //显示方案修改表单
+              function editDesign() {
+                $("#form-info").hide();
+                $("#form-box").show();
+                return false;
+              }
+              //生成询价单
+              function addInquiry(id) {
+                $.post('<?= U('Designer/inquiry') ?>', {id: id}, function (data) {
+                  console.log(data);
+                  if (data == 1) {
+                    $("#add-Inquiry").hide();
+                    alert('询价单生成成功');
+                  }else if (data == 2) {
+                    alert('方案不存在或已经被删除');
+                  }else if (data == 3) {
+                    $("#add-Inquiry").hide();
+                    alert('询价单已存在');
+                  } else {
+                    alert('询价单生成失败,请重试');
+                  }
                 });
-              });</script>
-            <p style="margin-bottom:10px;">
-              <input type="button" class="dosubmit" value="我要修改" id="edit-form">
+              }
+            </script>
+            <p style="margin-bottom:10px; width:820px;">
+              <input type="button" class="dosubmit fr" value="找搭建" onclick="addInquiry({$info['id']})" id="add-Inquiry">
+              <input type="button" class="dosubmit" value="我要修改" onclick="editDesign()" id="edit-design">
+
             </p>
             <div id="form-info">
 
@@ -115,17 +134,16 @@
             </form>
           </div>
           <?php if ($act == 'edit') { ?>
-
             <div class="mt20" id="filelist-box">
               <div class="m_head"><h3>方案附件</h3></div>
               <table class="m_table" style="width:820px;" id="file-list">
                 <thead><tr><th width="40">序号</th><th>文件名</th><th>附件</th><th width="150">更新时间</th><th width="100">操作</th></tr></thead>
                 <tbody>
-                    <?php foreach ($filesList as $k => $v) { ?>
-                  <tr id="file_<?= $v['id'] ?>">
+                  <?php foreach ($filesList as $k => $v) { ?>
+                    <tr id="file_<?= $v['id'] ?>">
                       <td align="center"><?php echo $k + 1; ?></td><td align="left"><a href="<?= U('Designer/file', ['act' => 'edit', 'id' => $v['id']]) ?>"><?= $v['title'] ?></a></td><td align="left"><?= $v['path'] ?></td><td align="center"><?= $v['addtime'] ?></td><td align="center">修改</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="delFile(<?= $v['des_id'] ?>,<?= $v['id'] ?>)" class="red">删除</a></td>
-                  </tr>
-                    <?php } ?>
+                    </tr>
+                  <?php } ?>
                 </tbody>
               </table>
             </div>

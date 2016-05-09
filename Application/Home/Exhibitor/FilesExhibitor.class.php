@@ -1,19 +1,19 @@
 <?php
 
-namespace Home\Designer;
+namespace Home\Exhibitor;
 
 use Think\Controller;
 
-class FilesDesigner extends Controller {
+class FilesExhibitor extends Controller {
 
-  public function add($mid, $des_id) {
+  public function add($mid, $pro_id) {
     $up = $this->_getUp($mid);
 
     $files = D('Files_table');
     $files_path = D('Files_path_table');
 
     $data = $files->create();
-    $data['des_id'] = $des_id;
+    $data['pro_id'] = $pro_id;
     $data['mid'] = $mid;
     $data['edit_id'] = $mid;
 
@@ -31,10 +31,10 @@ class FilesDesigner extends Controller {
     $data['type'] = 1;
     $data['addtime'] = date("Y-m-d H:i:s");
     $data['baseinfo'] = [
-        'description' => I('description', '', false),
+      'description' => I('description', '', false),
     ];
     $data['path'] = array(
-        'path' => $path,
+      'path' => $path,
     );
     //dump($data);exit;
 
@@ -54,7 +54,7 @@ class FilesDesigner extends Controller {
     return false;
   }
 
-  public function del($mid, $des_id, $id) {
+  public function del($mid, $pro_id, $id) {
     $map = [];
     $map['id'] = ['eq', $id];
     $map['mid'] = ['eq', $mid];
@@ -63,7 +63,7 @@ class FilesDesigner extends Controller {
     return $del == 1;
   }
 
-  public function edit($mid, $des_id, $id) {
+  public function edit($mid, $pro_id, $id) {
 
     $up = $this->_getUp($mid);
 
@@ -89,10 +89,10 @@ class FilesDesigner extends Controller {
     $data['edit_id'] = $mid;
     $data['addtime'] = date("Y-m-d H:i:s");
     $data['baseinfo'] = [
-        'description' => I('description', '', false),
+      'description' => I('description', '', false),
     ];
     $data['path'] = [
-        'path' => $path,
+      'path' => $path,
     ];
     //dump($data);
     $map['id'] = ['eq', $id];

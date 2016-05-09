@@ -222,6 +222,9 @@ class IndexController extends Controller {
         $this->error('验证码不正确！');
       }
     }
+    if($_SESSION['login']['se_id']){
+        header('Location:' . ITEM . '/index.php?s=/' . MODULE_NAME);
+    }
     $this->display();
   }
 

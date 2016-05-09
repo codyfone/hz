@@ -31,8 +31,22 @@
           </div>
         </div>
         <div class="m_body">
-          <p style="margin-bottom: 10px;font-size:24px;width:820px;"> <?php if (!$des_id) { ?><a class="btn-yellow fr" href="<?= U('Designer/design', ['act' => 'add', 'pid' => $id]) ?>">我要投稿</a><?php }?><span class="red">[设计需求]</span> <?= $info['company'] ?></p>
+          <p style="margin-bottom: 10px;font-size:24px;width:820px;"> <?php if (!$des_id) { ?><a class="btn-yellow fr" href="<?= U('Designer/design', ['act' => 'add', 'pid' => $id]) ?>">我要投稿</a><?php } ?><span class="red">[设计需求]</span> <?= $info['company'] ?></p>
           <include file="member:_projectInfo" />
+        </div>
+
+        <div class="mt20" id="filelist-box">
+          <div class="m_head"><h3>方案附件</h3></div>
+          <table class="m_table" style="width:820px;" id="file-list">
+            <thead><tr><th width="40">序号</th><th>文件名</th><th>附件</th><th width="150">更新时间</th><th width="100">操作</th></tr></thead>
+            <tbody>
+              <?php foreach ($filesList as $k => $v) { ?>
+                <tr id="file_<?= $v['id'] ?>">
+                  <td align="center"><?php echo $k + 1; ?></td><td align="left"><a href="<?= U('Designer/file', ['act' => 'edit', 'id' => $v['id']]) ?>"><?= $v['title'] ?></a></td><td align="left"><?= $v['path'] ?></td><td align="center"><?= $v['addtime'] ?></td><td align="center">查看</a></td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="clear"></div>

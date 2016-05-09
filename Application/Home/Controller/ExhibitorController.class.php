@@ -196,7 +196,7 @@ class ExhibitorController extends HomeController {
    * 最新项目
    */
 
-  public function project($json = NULL, $method = NULL) {
+  public function projectList($json = NULL, $method = NULL) {
 
     //main
     if (!is_int((int) $json)) {
@@ -315,114 +315,53 @@ class ExhibitorController extends HomeController {
    * @param $id  传人数据id
    * @examlpe 
    */
-  public function addProject($act = NULL, $id = NULL) {
+  public function project($act = NULL, $id = NULL) {
     //main
-    $result = M();
-    $project = D('Project');
-    $user = M('member')->where('id=' . $this->mid)->find();
+
 
     if (IS_POST) {
-      $data = $project->create();
-      $data['mid'] = $this->mid;
-      $data['company'] = $user['nickname'];
-      $data['baseinfo'] = M('Project_baseinfo')->create();
-      foreach ($data['baseinfo'] as $k => $v) {
-        if (is_array($v)) {
-          $data['baseinfo'][$k] = implode(',', $v);
-        }
-      }
-      $data['baseinfo']['enddate'] = I('enddate');
-
-      $tb_info = $result->query('SHOW TABLE STATUS LIKE \'' . C('DB_PREFIX') . 'project\'');
-      $newid = $tb_info[0]['Auto_increment'];
-      if (!$data['code']) {
-        $data['code'] = C('CFG_PROJECT_PRE') . str_pad($newid, 5, '0', STR_PAD_LEFT);
-      }
-
-      $data['uptime'] = date("Y-m-d H:i:s");
+      $Project = A('Project', 'Designer');
       //dump($data);exit;
       if ($act == 'add') {
-        $data['addtime'] = date("Y-m-d H:i:s");
-        //dump($data);exit;
-        $add = $project->relation('baseinfo')->add($data);
-        if ($add > 0) {
-          //记录日志
-//          $linkage = M('Linkage');
-//          $data['status'] = intval($data['status']);
-//          $statusname = $linkage->where('id=' . $data['status'])->getField('text');
-//          $notes = '状态为：' . $statusname;
-//          $log_data = array(
-//            'pro_id' => $add,
-//            'usage' => '无',
-//            'status' => $data['status'],
-//            'notes' => $notes,
-//          );
-//          A('Log', 'Helper')->actLog($log_data, 1);
-//          $sms_data = array(
-//            'title' => '项目：' . $data['company'] . '--' . $data['exhibition'] . ' 展装设计搭建招标 创建通知',
-//            'description' => '管理员：' . $username . '创建了项目：“<a href="javascript:showTab(\'项目-' . $data['title'] . '\',' . $add . ');">' . $data['title'] . '</a>”，点击项目名称查看更多详情。',
-//          );
-//          $Sms->sendsms($sms_data, $data['pm_id']);
-          //$Files->actFiles($add);
 
+        $add = $Project->add($this->mid);
+        if ($add > 0) {
           $this->success('项目添加成功', U('member/addProject', ['act' => 'edit', 'id' => $add]));
           exit;
         } else {
           $this->error('项目添加失败');
           exit;
         }
-        unset($data);
       } elseif ($act == 'edit') {
-        if (!intval($id)) {
-          $this->error('项目不存在或已删除，请返回检查');
+        $edit = $Project->edit($this->mid, $id);
+        if ($edit === true) {
+          $this->success('项目修改成功', U('exhibitor/addProject', ['act' => 'edit', 'id' => $id]));
+          exit;
         } else {
-          unset($data['id']);
-          $map['id'] = array('eq', $id);
-          if (!$data['code']) {
-            $data['code'] = C('CFG_CLIENT_PRE') . str_pad($id, 5, '0', STR_PAD_LEFT);
-          }
-
-          $edit = $project->relation('baseinfo')->where($map)->save($data);
-          unset($map);
-          if ($edit !== false) {
-            //日志信息
-//            if ($edit == 1) {
-//              if ($data['status'] == '')
-//                $data['status'] = 9;
-//              $Design = M('Design');
-//              $linkage = M('Linkage');
-//              $statusname = $linkage->where('id=' . $data['status'])->getField('text');
-//              $notes = '状态为：' . $statusname;
-//              $log_data = [
-//                'pro_id' => $id,
-//                'usage' => '无',
-//                'status' => $data['status'],
-//                'notes' => $notes,
-//              ];
-//              A('Log', 'Helper')->actLog($log_data, 1, 2);
-//            }
-            //$Files->actFiles($id);
-            $this->success('项目修改成功', U('exhibitor/addProject', ['act' => 'edit', 'id' => $id]));
-            exit;
-          } else {
-            $this->error('项目修改失败');
-          }
-          unset($data);
+          $this->error('项目修改失败');
         }
       }
     } else {
-
+      $project = D('Project');
+      $user = M('member')->where('id=' . $this->mid)->find();
       $this->assign('uniqid', uniqid());
       if ($act == 'edit') {
         if (!intval($id)) {
           $id = NULL;
-          $this->show('无法获取ID');
+          $this->show('项目不存在或已删除');
           exit;
         } else {
           $map['id'] = array('eq', $id);
           $info = $project->relation(true)->where($map)->find();
-//          dump($info);
-          //    $this->assign('role', $role);
+
+          $files = D('Files_table');
+          $map2 = [
+            'pro_id' => ['eq', $id],
+            'mid' => ['eq', $this->mid],
+          ];
+          $filesList = $files->relation(true)->where($map2)->select();
+          $this->assign('filesList', $filesList);
+          //dump($info);
           $this->assign('id', $id);
           $this->assign('act', 'edit');
           $this->assign('info', $info);
@@ -441,174 +380,6 @@ class ExhibitorController extends HomeController {
     }
 
     unset($project, $Public);
-  }
-
-  /**
-   * 添加项目附件
-   * @param $id  项目ID
-   * @param $tid  任务D
-   * @param $paid  父级ID
-   * @param $go  为1时，获取post
-   * @param $act  为1时：新增数据、为2时：编辑数据、为3时：刪除数据
-   * @examlpe 
-   */
-  public function file($act, $go = 0, $id = 0) {
-
-    $Log = A('Log', 'Helper');
-    //main
-    $up = new \Org\Net\UploadFile();
-    $type = C('UPLOAD_TYPE');
-    $type = explode(',', $type);
-    $up->allowExts = $type;
-    $upload = C('TMPL_PARSE_STRING.__UPLOAD__');
-    $up->savePath = APP_PATH . '/' . $upload . '/';
-    $up->maxSize = C('UPLOAD_SIZE');
-    $up->allowNull = true;
-    $up->charset = 'UTF-8';
-    $up->autoSub = true;
-
-    $sys = new \Org\Net\FileSystem();
-    $sys->root = ITEM;
-    $sys->charset = C('CFG_CHARSET');
-
-    //main
-    $id = intval($id);
-    if ($go == 1) {
-      $userid = $_SESSION['login']['se_id'];
-      $files = D('Files_table');
-      $files_path = D('Files_path_table');
-      switch ($act) {
-        case 'add':
-          $role = $Public->check('Files', array('c'));
-          if ($role < 0) {
-            echo $role;
-            exit;
-          }
-          $data = $files->create();
-          $data['pro_id'] = $id;
-          $data['user_id'] = $userid;
-          $data['edit_id'] = $userid;
-          if ($up->upload()) {
-            $info = $up->getUploadFileInfo();
-            $path = $info[0]['savename'];
-          } else {
-            header("Content-Type:text/html;charset=utf-8");
-            $no = $up->getErrorNo();
-            $path = '';
-            if ($no != 2) {
-              echo $up->getErrorMsg();
-              exit;
-            }
-          }
-          $data['type'] = 1;
-          $data['addtime'] = date("Y-m-d H:i:s");
-          $data['baseinfo'] = array(
-            'description' => I('description', '', false),
-          );
-          $data['path'] = array(
-            'path' => $path,
-          );
-          //dump($data);exit;
-
-          $add = $files->relation(true)->add($data);
-          if ($add > 0) {
-//            $log_data = array(
-            //操作日志
-//              'pro_id' => $data['pro_id'],
-//              'files_id' => $add,
-//              'usage' => '无',
-//              'status' => 0,
-//              'notes' => '',
-//            );
-//
-//            $Log->actLog($log_data, 4);
-
-            echo 1;
-          } else {
-            echo 0;
-          }
-          break;
-
-        case 'edit':
-          $data = $files->create();
-          $files_id = I('files_id');
-          if ($up->upload()) {
-            $info = $up->getUploadFileInfo();
-            $path = $info[0]['savename'];
-          } else {
-            header("Content-Type:text/html;charset=utf-8");
-            $no = $up->getErrorNo();
-            $path = '';
-            if ($no != 2) {
-              echo $up->getErrorMsg();
-              exit;
-            }
-          }
-          $data['edit_id'] = $userid;
-          $data['addtime'] = date("Y-m-d H:i:s");
-          $data['baseinfo'] = array(
-            'description' => I('description', '', false),
-          );
-          $data['path'] = array(
-            'path' => $path,
-          );
-          //dump($data);
-          $map['id'] = array('eq', $files_id);
-          $oldpath = $files_path->where('files_id=' . $files_id)->getField('path');
-          $edit = $files->relation(true)->where($map)->save($data);
-          if ($edit !== false) {
-            $upload = C('TMPL_PARSE_STRING.__UPLOAD__');
-            $path = APP_PATH . '/' . $upload . '/' . $oldpath;
-            $sys->delFile($path);
-//            $log_data = array(
-//              'pro_id' => $pro_id,
-//              'files_id' => $files_id,
-//              'usage' => '无',
-//              'status' => 0,
-//              'notes' => '',
-//            );
-//
-//            $Log->actLog($log_data, 4, 2);
-
-            echo 1;
-          } else {
-            echo 0;
-          }
-          break;
-
-        case 'del':
-          $role = $Public->check('Files', array('d'));
-          if ($role < 0) {
-            echo $role;
-            exit;
-          }
-          $map = array();
-          $map['id'] = array('eq', $id);
-          $del = $files->relation(true)->where($map)->delete();
-          if ($del == 1) {
-            echo 1;
-          } else {
-            echo 0;
-          }
-          break;
-      }
-    } else {
-      if ($act == 'edit') {
-        $role = $Public->check('Files', array('u'));
-        $files = D('Files_table');
-        $map = array();
-        $map['id'] = array('eq', $id);
-        $info = $files->relation(true)->where($map)->find();
-        $this->assign('info', $info);
-      } else {
-        $role = $Public->check('Files', array('c'));
-      }
-      $this->assign('uniqid', uniqid());
-      $this->assign('act', $act);
-      $this->assign('id', $id);
-      $this->assign('role', $role);
-      $this->display();
-    }
   }
 
   /**
@@ -802,13 +573,70 @@ class ExhibitorController extends HomeController {
     }
   }
 
-  public function addDesign($pid) {
-    $pid = intval($pid);
-    $project = M('Project')->where('id=' . $pid)->find($pid);
-    if ($project == null) {
-      $this->error('项目不存在');
+  /**
+   * 添加项目附件
+   * @param $id  项目ID
+   * @param $tid  任务D
+   * @param $paid  父级ID
+   * @param $go  为1时，获取post
+   * @param $act  为1时：新增数据、为2时：编辑数据、为3时：刪除数据
+   * @examlpe 
+   */
+  public function file($act, $pro_id = 0, $files_id = 0) {
+
+    $Log = A('Log', 'Helper');
+    $Files = A('Files', 'Exhibitor');
+    //main
+    $pro_id = intval($pro_id);
+    if (IS_POST) {
+      switch ($act) {
+        case 'add':
+          $add = $Files->add($this->mid, $pro_id);
+          if ($add > 0) {
+            $this->success('附件添加成功', U('project', ['act' => 'edit', 'id' => $pro_id]));
+          } else {
+            $this->error('附件添加失败', U('project', ['act' => 'edit', 'id' => $pro_id]));
+          }
+          break;
+
+        case 'edit':
+          $files_id = I('files_id');
+          $edit = $Files->edit($this->mid, $pro_id, $files_id);
+          if ($edit === true) {
+            $this->success('附件更新成功', U('design', ['act' => 'edit', 'id' => $pro_id]));
+          } else {
+            $this->error('附件更新失败', U('design', ['act' => 'edit', 'id' => $pro_id]));
+          }
+          break;
+
+        case 'del':
+          $files_id = intval(I('post.files_id'));
+          $pro_id = intval(I('post.des_id'));
+          $del = $Files->del($this->mid, $pro_id, $files_id);
+          if ($del === true) {
+            echo 1;
+          } else {
+            echo 0;
+          }
+          break;
+      }
+    } else {
+      if ($act == 'edit') {
+        $files = D('Files_table');
+        $map = [];
+        $map['id'] = ['eq', $files_id];
+        $map['mid'] = ['eq', $this->mid];
+
+        $info = $files->relation(true)->where($map)->find();
+        $this->assign('info', $info);
+      } else {
+        
+      }
+      $this->assign('uniqid', uniqid());
+      $this->assign('act', $act);
+      $this->assign('id', $id);
+      $this->display();
     }
-    $this->display();
   }
 
   /*

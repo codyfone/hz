@@ -430,8 +430,55 @@
               </p>
             </form>
           </div>
-            <?php if($act = 'edit'){ ?>
-            <?php } ?>
+          <?php if ($act = 'edit') { ?>
+
+            <div class="mt20" id="filelist-box">
+              <div class="m_head"><h3>项目附件</h3></div>
+              <table class="m_table" style="width:820px;" id="file-list">
+                <thead><tr><th width="40">序号</th><th>文件名</th><th>附件</th><th width="150">更新时间</th><th width="100">操作</th></tr></thead>
+                <tbody>
+                  <?php foreach ($filesList as $k => $v) { ?>
+                    <tr id="file_<?= $v['id'] ?>">
+                      <td align="center"><?php echo $k + 1; ?></td><td align="left"><a href="<?= U('Exhibitor/file', ['act' => 'edit', 'pro_id'=>$info['id'],'id' => $v['id']]) ?>"><?= $v['title'] ?></a></td><td align="left"><?= $v['path'] ?></td><td align="center"><?= $v['addtime'] ?></td><td align="center">修改</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="delFile(<?= $v['des_id'] ?>,<?= $v['id'] ?>)" class="red">删除</a></td>
+                    </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt20" id="fileadd-box">
+              <div class="m_head"><h3>附件添加</h3></div>
+              <div class="m_body" style="width:820px;">
+                <form id="file-form" method="post" action="<?= U('Exhibitor/file') ?>">
+                  <input type="hidden" name="act" value="add">
+                  <input type="hidden" name="pro_id" value="{$info['id']}">
+                  <table class="m_table_no_border" width="100%" border="0" cellspacing="0" cellpadding="2">
+                    <tr>
+                      <th width="70" valign="middle" align="left">
+                        文件名:
+                      </th>
+                      <td>
+                        <input class="input_public" type="text" name="title" id="title{$uniqid}" value="" size="50">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th height="26" align="left">附件:</th>
+                      <td>
+                        <input name="path" type="file">
+                      </td>
+                    </tr>
+                    <tr>
+                      <th align="left">内容:</th>
+                      <td><textarea name="content" id="content" style="width:700px;height:300px;"></textarea></td>
+                    </tr>
+                  </table>
+                  <p style="width:820px;margin-top:20px;text-align:center;">
+                    <input class="dosubmit" type="submit" value="提交">
+                  </p>
+                </form>
+              </div>
+            </div>
+
+          <?php } ?>
         </div>
       </div>
       <div class="clear"></div>
