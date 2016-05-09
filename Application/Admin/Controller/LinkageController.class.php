@@ -94,6 +94,7 @@ class LinkageController extends Controller {
       }
     } else {
       $data = $linkage->create();
+      $data['val'] = I('post.val','',false);
       if ($data['val'] == '') {
         $data['val'] = $data['text'];
       }
