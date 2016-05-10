@@ -36,6 +36,7 @@
           $('<button class="btn">上传图片</button>').insertAfter($(target))
                   .click(function () {
                     editor.getDialog("insertimage").open();
+                    return false;
                   });
         } else if (editType == 'upMutiImgs') {
           // alert('adfasd');
