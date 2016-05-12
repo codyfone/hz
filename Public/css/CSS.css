@@ -218,7 +218,7 @@ body{ background-color:#fff; font-family:"微软雅黑"; font-size:14px; line-he
 .zh_yema a{ padding:5px 10px; border-radius:4px; border:1px solid #999; font-size:14px; color:#333; float:left; margin-right:20px;}
 .zh_yema .zh_yema_te{ background:#ff5837; color:#FFF;}
 .zh_csbox{ width:1200px; height:200px; margin:0 auto; border-top:1px solid #999; padding-bottom:30px;}
-.zh_cs_l{ float:left; margin-top:25px; width:800px; height:200px;}
+.zh_cs_l{ float:left; margin-top:25px; width:900px; height:200px;}
 .zh_cs_lt img{ float:left;border-radius:4px; width:260px; height:170px; margin-right:20px;}
 .zh_cs_lw{ float:left; }
 .zh_cs_lw p{ font-size:17px; color:#333; padding-right:70px; background:url(../images/cs_02.png) no-repeat right center;}
@@ -232,8 +232,8 @@ body{ background-color:#fff; font-family:"微软雅黑"; font-size:14px; line-he
 .zh_cs_yy{ float:right;}
 .zh_cs_yy a{display:block; width:113px; height:36px; background:#ff6700; border-radius:4px; margin-top:70px; text-align:center; line-height:36px; color:#FFF; font-size:17px;font-family:"思源黑体 CN Regular", "微软雅黑";}
 .zh_cs_yy img{ margin-top:30px; margin-left:10px;}
-.zh_cs_bg{ width:320px; height:80px; border:1px solid #efefef; border-radius:2px; background:#ffffff; margin-top:30px;}
-.zh_cs_bgs{ width:300px; height:40px; border-bottom:1px dotted #CCC; margin-left:10px;}
+.zh_cs_bg{ width:370px; height:80px; border:1px solid #efefef; border-radius:2px; background:#ffffff; margin-top:30px;}
+.zh_cs_bgs{ width:350px; height:40px; border-bottom:1px dotted #CCC; margin-left:10px;}
 .zh_cs_bgs span{ float:left; margin-right:30px; line-height:40px; color:#999; font-size:14px; margin-left:20px;}
 .zh_cs_bgs .zh_cs_te9{ margin-left:0;}
 .zh_cs_bg_te1{ border-bottom:none;}
@@ -497,7 +497,7 @@ label.tipsMedal{display:block;font-size:14px;font-weight:normal;position:absolut
 .zh_hy_lr p{ display:block; font-size:12px; color:#999; padding-left:30px; background:url(../images/hy_01.png) no-repeat left center; margin-top:15px; margin-left:15px; width:400px;}
 .zh_hy_lr .zh_hy_te{ background:url(../images/hy_02.png) no-repeat left center;}
 .zh_hy_lr .zh_hy_te1{ background:url(../images/hy_03.png) no-repeat left center;}
-.zh_hy_lr .zh_hy_te2{ background:url(../images/guildstart.png) no-repeat left center; padding-left:105px;}
+.zh_hy_lr .zh_hy_te2{ background:url(../images/hy_04.png) no-repeat left center; }
 .zh_hy_lr .zh_hy_te2 span{ color:#ff6700;}
 .zh_hy_05 a{ width:100px; height:30px; border-radius:4px; border:1px solid #ff6700; display:block; float:right; font-size:16px; color:#ff6700; text-align:center; line-height:30px;}
 .zh_hy_05 a:hover{ color:#FFF; background:#ff6700;}
@@ -507,8 +507,85 @@ label.tipsMedal{display:block;font-size:14px;font-weight:normal;position:absolut
 .zh_hy_ph a:hover{ color:#ff6700;}
 
 
+/*
+文章详情*/
+.zh_xq_xzll .title{text-align:center;line-height:40px;font-size:20px;font-weight: bold;}
+.zh_xq_xzll .content{padding:40px;padding-right: 0}
+
+/* 文章列表 */
+.cooperation_left{width:220px;float:left;}
+.cooperation_left .bar{height:68px;background: #ff9c03;border-radius: 5px 5px 0 0;position: relative;padding-left: 20px;}
+.cooperation_left .bar1{background: #5f5f5f;}
+.cooperation_left .bar p{color:#fff;font-weight: bold;font-size: 20px;padding-top: 12px;}
+.cooperation_left .bar span{font-size: 12px;color:#a9a9a9;}
+.cooperation_left .bar img{position: absolute;top:25px;right:15px;}
+.cooperation_left .list{border: 1px solid #e8e8e8;border-top: 0;}
+.cooperation_left .list a{display: block;height:48px;line-height: 48px;padding:0 20px;color:#252525;border-top: 1px solid #e8e8e8;}
+.cooperation_left .list a:hover{color:#b1191a;}
+.cooperation_left .list a span{float:left;}
+.cooperation_left .list a em{float:right;font-family: "宋体";}
+
+.cooperation_left .phone_container{height:86px;border: 1px solid #e8e8e8;border-top: 0;font-family: '宋体';font-size: 12px;text-align: center;}
+.cooperation_left .phone_container p{padding-top: 20px;padding-bottom: 5px;}
+.cooperation_left .phone_container h1{color:#c42715;font-size: 25px;font-family: '微软雅黑';font-weight: bold;}
+.cooperation_left .phone_container a{display: block;color:#fff;width:90px;height:30px;line-height: 30px;text-align: center;font-size: 12px;color:#fff;background: #c42715;border-radius: 3px;margin-left: 62px;}
+
+.cooperation_right{float:right;width:960px;border:1px solid #e8e8e8;}
+.cooperation_right .cooperation_right_title{height:32px;line-height:32px;border-bottom:1px solid #e8e8e8;background: #ff9c03;padding:0 15px;font-family: '宋体';font-size: 12px;color:#707070;}
+.cooperation_right .cooperation_right_title span{float:left;}
+.cooperation_right .cooperation_right_title .sort{float:left;padding:0 10px;color:#000;background: url(../images/sort_down.png) no-repeat right center;margin-right: 10px;}
+.cooperation_right .cooperation_right_title .selected{color:#f40000;background: url(../images/sort_down_selected.png) no-repeat right center;}
+.cooperation_right .cooperation_right_title .publish{width:108px;height:25px;background: #e2352a;border:1px solid #cc0000;text-align: center;line-height: 25px;color:#fff;float:right;border-radius: 3px;margin-top: 3px;}
+
+.cooperation_right .cooperation_right_list{padding:18px;}
+.cooperation_right .cooperation_right_list li{padding:15px 0;color:#333;}
+.cooperation_right .cooperation_right_list li span{font-size: 12px;}
+.cooperation_right .cooperation_right_list li a{color:#333;}
+.cooperation_right .cooperation_right_list li a:hover{color:#ff9c03;}
+.cooperation_right .cooperation_right_list li .left{float: left;}
+.cooperation_right .cooperation_right_list li .right{float: right;}
+
+/*展馆列表页*/
+.zh_hy_lr p{background: url(../images/hy_02.png) no-repeat left center;}
+.zh_hy_lr .zh_hy_te{background: url(../images/hy_01.png) no-repeat left center;}
 
 
+
+/*展馆详情页*/
+.zhanguan_info_container{}
+.company_info p em{font-style: normal}
+.zhanguan_info_container .pic{width: 500px;height: 300px;}
+.zhanguan_info_container .pic .bd img{width: 500px;height: 300px;}
+.zhanguan_info_container .company_info{padding-top:25px;}
+/*展会详情页*/
+.zhanhui_info_container{}
+
+.zhanhui_info_container p span{padding-left: 20px}
+.zhanhui_info_container .pic{width: 600px;height: 400px;}
+.zhanhui_info_container .pic .bd img{width: 600px;height: 400px;}
+.zhanhui_info_container .company_info{padding-top:10px;}
+.zhanhui_info_container .company_info .company_name{font-size: 20px;line-height: 70px}
+.zhanhui_info_container .company_info{width:500px;}
+
+
+/*分页*/
+.zh_yema .current{ padding:5px 10px; border-radius:4px; border:1px solid #999; font-size:14px; color:#333; float:left; margin-right:20px; background:#ff5837; color:#FFF;}
+
+
+/* 工厂详情页 */
+.factory_case_container{}
+.factory_case_container li{width:21%;float:left;margin:2%;}
+.factory_case_container li img{width:100%;}
+.factory_case_container li p{width:100%;height: 48px;line-height: 24px;overflow: hidden;color:#333;}
+
+
+/*案例详情页*/
+.case_page_left{width:70%;float: left;}
+.case_page_left img{width:100%;float: left;}
+.case_page_right{width:28%;float: right;background: #eee;min-height: 200px;}
+.case_page_right .container{padding:20px;}
+.case_page_right .container h2{font-weight: normal;}
+.case_page_right .container p{color:#666;}
 
 
 

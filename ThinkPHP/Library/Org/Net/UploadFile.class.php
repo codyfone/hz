@@ -509,7 +509,7 @@ class UploadFile {//类定义开始
      */
     private function checkExt($ext) {
         if(!empty($this->allowExts))
-            return in_array(strtolower($ext),$this->allowExts,true);
+            return in_array('.'.strtolower($ext),$this->allowExts,true);
         return true;
     }
 

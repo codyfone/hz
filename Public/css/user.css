@@ -106,3 +106,47 @@ a.btn-yellow,a.btn-yellow-sm{color:#fff;}
 
 .plus-tag a:hover em{background-position:-3px 0;}
 .plus-tag a:hover em{color:#fff;}
+/*图集上传*/
+.upimage_btn{
+  color: #3d9ccc;
+  background: #e9f1f5;
+  border: 1px #e4ecf0 solid;padding: 7px 18px;
+  font-size: 14px;
+  line-height: 20px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;cursor:pointer;}
+.fileListbox {
+  max-width: 830px;
+  margin: 10px 0;
+  border: 2px dashed #E6E6E6;
+  padding-top: 10px;
+  text-align: center;
+  background: url("../images/image.png") no-repeat scroll center center transparent;
+  position: relative;
+  overflow: hidden;
+}
+#fileListWarp li {
+  float: left;
+  display: block;
+  list-style: outside none none;
+  padding: 0px;
+  width: 113px;
+  height: 150px;
+  margin: 5px;
+  padding:5px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  position: relative;
+}
+#fileListWarp li .removeimg {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  display: block;
+  background: #eee url(../images/icons.gif) no-repeat right top;
+  cursor: pointer;
+} 
