@@ -38,7 +38,6 @@ class DesignerController extends HomeController {
 
   public function baseinfo() {
     if (IS_POST) {
-
       $data = [
         'mobile' => I('post.mobile'),
         'nickname' => I('post.nickname'),
@@ -485,7 +484,7 @@ class DesignerController extends HomeController {
       );
 
       $sys = new \Org\Net\FileSystem();
-      $json = $sys->getFile(RUNTIME_PATH . 'Data/Json/Linkage/renwuzhuangtai_data.json');
+      $json = $sys->getFile(RUNTIME_PATH . 'Data/Json/Linkage/fanganzhuangtai_data.json');
       $status = json_decode($json, true);
       $this->assign('new_info', $new_info);
       $this->assign('nowyear', date("Y"));
@@ -512,7 +511,7 @@ class DesignerController extends HomeController {
         case 'add':
           $add = $Design->add($this->mid, $pro_id);
           if ($add > 0) {
-            $this->success('方案添加成功', U('desig', ['act' => 'edit', 'id' => $add]));
+            $this->success('方案添加成功', U('design', ['act' => 'edit', 'id' => $add]));
           } else {
             $this->error('方案添加失败');
           }
@@ -668,6 +667,170 @@ class DesignerController extends HomeController {
       } else {
         echo 0;
       }
+    }
+  }
+
+  /**
+   * 案例列表
+   * @param $json    为NULL输出模板。为1时输出列表数据到前端，格式为Json
+   * @examlpe 
+   */
+  public function productList($type, $json = NULL) {
+    $Public = A('Index', 'Helper');
+    //main
+    if (!is_int((int) $json)) {
+      $json = NULL;
+    }
+    $product = D('Product');
+    $get_sort = I('get.sort');
+    $get_order = I('get.order');
+    $sort = $get_sort ? strval($get_sort) : 'id';
+    $sort = str_replace('_new_', '_old_', $sort);
+    $order = $get_order ? strval($get_order) : 'asc';
+    $result = M();
+    $Product_table = C('DB_PREFIX') . 'product';
+    $Industry_table = C('DB_PREFIX') . 'industry';
+    $map = [];
+    if ($type == 1) {
+      //$sql = '(' . $result->field('pro_id as id')->table($Design_table)->order('pro_id')->select(false) . ')';
+      // $map['id'] = '(id in(' . $sql . ') and status>0)';
+      $map['status'] = 't1.status!=2';
+    } else {
+      $map['status'] = 't1.status=2';
+    }
+    $map['mid'] = 'and t1.mid=' . $this->mid;
+    $map['type'] = 'and t1.type=0';
+
+    $map = implode(' ', $map);
+    //dump(unserialize(slashes(cookie('Product'))));
+    $all = cookie('All');
+
+    $arr_flelds = array(
+      'id' => 't1.id as id',
+      'company' => 't1.title as title',
+      'status' => 't1.status as t1_status',
+      'mid' => 't1.mid as t1_mid',
+      'code' => 't1.code as code',
+      'uptime' => 't1.uptime as t1_uptime',
+      'addtime' => 't1.addtime as addtime',
+      'hits' => 't1.hits as hits',
+      'floor_area' => 't1.floor_area as floor_area',
+      'price' => 't1.price as price',
+//        'open_num' => 't1.open_num as t1_old_open_num',
+      //      'open_num2' => '(t1.opennum+\'面开口\') as t1_new_open_num',
+      'structure' => 't1.structure as structure',
+      'industry' => 't3.text as industry',
+      'check' => 't1.check as t1_check',
+    );
+    $fields = implode(',', $arr_flelds);
+    unset($arr_flelds);
+    $count = $result->query('select count(*) as total from ' . $Product_table . ' as t1 where '.$map);
+    $count = $count[0]['total'];
+
+    $Page = new \Think\Page($count,10);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+    $show = $Page->show();// 分页显示输出
+
+    $info = $result->table($Product_table . ' as t1')->field($fields)->where($map)->order($sort . ' ' . $order . ',t1_uptime desc')->join('LEFT JOIN ' . $Industry_table . ' as t3 ON t3.id = t1.industry_id')->limit($Page->firstRow.','.$Page->listRows)->select();
+      
+    $count = $count[0]['total'];
+    //dump($info);exit;
+    $new_info = array();
+    $new_info['total'] = $count;
+
+    if ($json == 1) {
+      if ($method == 'total') {
+        echo json_encode($new_info);
+        exit;
+      }
+      $new_info['rows'] = $info;
+      //dump($new_info);
+      echo json_encode($new_info);
+      unset($new_info, $info, $order, $sort, $count, $items);
+    } else {
+      $new_info['rows'] = $info;
+//      dump($info);
+
+      $this->assign('page',$Page->show());// 赋值分页输出
+      $this->assign('new_info', $new_info);
+      $this->assign('groupid', $groupid);
+      $this->assign('uniqid', uniqid());
+      $this->assign('type', $type);
+      $this->assign('page_row', $page_row);
+      $this->display();
+      unset($Public);
+    }
+  }
+
+  public function product($act, $id = 0) {
+
+    $id = intval($id);
+    if (IS_POST) {
+      $Product = A('Product', 'Designer');
+      switch ($act) {
+        case 'add':
+          $add = $Product->add($this->mid);
+          if ($add > 0) {
+            $this->success('案例添加成功', U('product', ['act' => 'edit', 'id' => $add]));
+          } else {
+            $this->error('案例添加失败');
+          }
+          break;
+
+        case 'edit':
+          $des_id = intval($id);
+          $edit = $Product->edit($this->mid, $des_id);
+          if ($edit === true) {
+            $this->success('案例修改成功');
+          } else {
+            $this->error('案例添加失败');
+          }
+          break;
+
+        case 'del':
+          $edit = $Product->del($this->mid, $id);
+          if ($edit === true) {
+            echo 1;
+          } else {
+            echo 0;
+          }
+          break;
+      }
+    } else {
+
+
+      $map['id'] = array('eq', $pid);
+      if ($act == 'edit') {
+        $Product = M('Product');
+        $map['id'] = ['eq', $id];
+        $map['mid'] = ['eq', $this->mid];
+        $info = $Product->where($map)->find();
+        if (!$info) {
+          $this->error('案例不存在');
+        }
+
+        $files = D('Files_table');
+        $map2 = [
+          'des_id' => ['eq', $id],
+          'mid' => ['eq', $this->mid],
+        ];
+        $filesList = $files->where($map2)->select();
+        $this->assign('filesList', $filesList);
+      } else {
+        $info = [];
+      }
+
+      //行业分类
+      $sys = new \Org\Net\FileSystem();
+      $json = $sys->getFile(RUNTIME_PATH . 'Data/Json/Industry_data.json');
+      $industrys = json_decode($json, true);
+      //print_r($industrys);exit;
+
+      $this->assign('industrys', $industrys);
+      $this->assign('info', $info);
+      $this->assign('uniqid', uniqid());
+      $this->assign('act', $act);
+      $this->assign('id', $id);
+      $this->display();
     }
   }
 

@@ -73,9 +73,9 @@
                   if (data == 1) {
                     $("#add-Inquiry").hide();
                     alert('询价单生成成功');
-                  }else if (data == 2) {
+                  } else if (data == 2) {
                     alert('方案不存在或已经被删除');
-                  }else if (data == 3) {
+                  } else if (data == 3) {
                     $("#add-Inquiry").hide();
                     alert('询价单已存在');
                   } else {
@@ -85,7 +85,7 @@
               }
             </script>
             <p style="margin-bottom:10px; width:820px;">
-              <input type="button" class="dosubmit fr" value="找搭建" onclick="addInquiry({$info['id']})" id="add-Inquiry">
+              <input type="button" class="dosubmit fr" value="找报价" onclick="addInquiry({$info['id']})" id="add-Inquiry">
               <input type="button" class="dosubmit" value="我要修改" onclick="editDesign()" id="edit-design">
 
             </p>

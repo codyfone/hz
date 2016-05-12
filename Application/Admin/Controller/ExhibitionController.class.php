@@ -62,6 +62,7 @@ class ExhibitionController extends Controller {
     } else {
       $data = $exhibition->create();
       $data['conent'] = I('post.content', '', false);
+      $data['images'] = I('post.images', '', false);
       if ($act == 'add') {
         $Public = A('Index', 'Helper');
         $role = $Public->check('Exhibition', array('c'));

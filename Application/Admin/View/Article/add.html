@@ -1,0 +1,131 @@
+<script language="javascript">
+var role = '{$role}';
+if(role==-2){
+	cancel['Exh'].dialog('close');
+	cancel['Exh'] = null;
+	$.messager.alert('提示','您没有新增权限！','warning');
+}else if(role==-3){
+	cancel['Exh'].dialog('close');
+	cancel['Exh'] = null;
+	$.messager.alert('提示','您没有编辑权限！','warning');
+}
+$(function(){
+	$("#addFormArticle{$uniqid}").form('load',{
+		'title':'<?php echo $info["title"] ?>',
+		'create_time':'<?php echo $info["create_time"] ?>',
+                'cid':'<?php echo $info["cid"] ?>',
+
+	});
+});
+
+var idd = '';
+function onSubmitArticle(idd){
+	$.messager.progress();
+	$("#addFormArticle"+idd).form('submit',{
+		url:'__URL__/add/act/add/go/1',
+		onSubmit: function(){
+			var isValid = $(this).form('validate');
+			if (!isValid){
+				$.messager.progress('close');
+			}
+			return isValid;
+		},
+		success:function(data){
+			$.messager.progress('close');
+			if(data==1){
+				$.messager.alert('提示','新增数据成功！','info',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					$("#Article").datagrid('reload');
+					if(sa==1){
+						cancel['Exh'].dialog('close');
+						cancel['Exh'] = null;
+					}
+				});
+			}else if(data==0){
+				$.messager.alert('提示','新增数据失败！','warning');
+			}else{
+				$.messager.alert('提示','您没有新增权限！','warning',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					if(sa==1){
+						cancel['Exh'].dialog('close');
+						cancel['Exh'] = null;
+					}
+				});
+			}
+		}
+	});
+}
+
+function onUploadArticle(idd){
+	$.messager.progress();
+	var ids = $("#ids"+idd).val();
+	$("#addFormArticle"+idd).form('submit',{
+		url:'__URL__/add/act/edit/go/1/id/'+ids,
+		onSubmit: function(){
+			var isValid = $(this).form('validate');
+			if (!isValid){
+				$.messager.progress('close');
+			}
+			return isValid;
+		},
+		success:function(data){
+			$.messager.progress('close');
+			if(data==1){
+				$.messager.alert('提示','更新数据成功！','info',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					$("#Exh").datagrid('reload');
+					if(sa==1){
+						cancel['Exh'].dialog('close');
+						cancel['Exh'] = null;
+					}
+				});
+				$("#add").dialog('refresh');
+			}else if(data==0){
+				$.messager.alert('提示','更新数据失败！','warning');
+			}else{
+				$.messager.alert('提示','您没有更新权限！','warning',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					if(sa==1){
+						cancel['Exh'].dialog('close');
+						cancel['Exh'] = null;
+					}
+				});
+			}
+		}
+	});
+}
+
+function onResetArticle(idd){
+	cancel['Exh'].dialog('close');
+	cancel['Exh'] = null;
+}
+</script>
+<div class="con-tb">
+<form id="addFormArticle{$uniqid}" method="post">
+ <table class="infobox" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="13%"><label for="title">文章标题</label></td>
+    <td colspan="3"><input name="title" type="text" class="easyui-validatebox" value="" style="width:99%;" data-options="required:true,validType:'ptext'" /></td>
+    </tr>
+  <tr>
+    <td width="13%"><label for="create_time">发布时间</label><input id="ids{$uniqid}" type="hidden" value="{$id}" /></td>
+    <td width="37%">
+        <input name="create_time" type="text" class="easyui-datepicker" data-options="" size="12" autocomplete="on">
+    </td>
+    <td width="13%"><label for="cid">所属分类</label></td>
+    <td width="37%">
+     <input name="cid" class="easyui-combotree relo" id="cid{$uniqid}" size="28" data-options="url:'__ITEM__/index.php/Admin/article/list_json',editable:false,method:'get',required:true,valueField:'id',textField:'text'" />
+    </td>
+  </tr>
+  <tr>
+    <td width="13%"><label for="contents">公告内容</label></td>
+    <td colspan="3">
+    <textarea name="content" id="contentID{$uniqid}"  rows="18" class="easyui-kindeditor" style="width:99%; height:350px" data-options="uploadJson:'__MODULE__/Upload/save/act/notice'">{$info.content}</textarea>
+    </td>
+  </tr>
+  <tr>
+    <td height="38" colspan="4" align="center"><if condition="$act=='add'"><a href="javascript:void(0);" onclick="javascript:onSubmitArticle('{$uniqid}')" id="su" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a><else /><a href="javascript:void(0);" onclick="javascript:return onUploadArticle('{$uniqid}')" id="sue" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a></if> &nbsp; <a href="javascript:void(0);" onclick="javascript:onResetArticle('{$uniqid}')" id="re" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a></td>
+  </tr>
+ </table>
+</form>
+</div>

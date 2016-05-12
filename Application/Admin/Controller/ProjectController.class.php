@@ -13,7 +13,48 @@ class ProjectController extends Controller {
   public function index() {
     $Public = A('Index', 'Helper');
     $Public->check('Project', array('r'));
+ $App = A('App', 'Helper');
 
+    $sys = new \Org\Net\FileSystem();
+    $sys->root = ITEM;
+    $sys->charset = C('CFG_CHARSET');
+
+    //main
+    $path = CONF_PATH . 'version.txt';
+    $ver = $sys->getFile($path);
+    $ver = preg_replace("/;[\r\n]/iu", ";\n", $ver);
+    $arr_ver = explode(";\n", $ver);
+    $arr_ver = array_filter($arr_ver);
+    $result = M();
+    $notice = M('Notice_table');
+    $Project_table = C('DB_PREFIX') . 'project';
+    $Design_table = C('DB_PREFIX') . 'design';
+    $Design_main = C('DB_PREFIX') . 'design_main';
+    $Project_baseinfo = C('DB_PREFIX') . 'project_baseinfo';
+    $userid = $_SESSION['login']['se_id'];
+    $groupid = $_SESSION['login']['se_groupID'];
+    $comyid = $_SESSION['login']['se_comyID'];
+    $comy = M('User_company_table');
+    $protype = $comy->where('id=' . $comyid)->getField('type');
+    $sql = '('.$result->table($Design_main . ' as tt1')->field('tt1.des_id as id')->where('tt1.pro_id=t1.id')->select(false).')';
+    $count = '('.$result->table($Design_main . ' as tt5')->field('count(tt5.id) as total')->where('tt5.pro_id=t1.id')->select(false).')';
+    $comple = '('.$result->table($Design_table . ' as tt4')->field('count(tt4.id) as comple')->where('tt4.id IN(' . $sql . ') and tt4.status=51')->select(false).')';
+    $ids = '('.$result->table($Design_table . ' as tt3')->field('pro_id as id')->where('TO_DAYS(NOW())>TO_DAYS(tt3.enddate)')->select(false).')';
+    $cinfo = $result->table($Project_table . ' as t1')->where('round(' . $comple . '/' . $count . '*100,0)=100')->getField('count(id)');
+    $uinfo = $result->table($Project_table . ' as t1')->where('round(' . $comple . '/' . $count . '*100,0)<100')->getField('count(id)');
+    $tinfo = $result->table($Project_table . ' as t1')->where('id in (' . $ids . ') and round(' . $comple . '/' . $count . '*100,0)<100')->getField('count(id)');
+
+    $ninfo = $notice->where('status>0')->order('status asc,addtime desc')->select();
+    $design_status = $App->getJson('fanganzhuangtai', '/Linkage');
+    $this->assign('userid', $userid);
+    $this->assign('ninfo', $ninfo);
+    $this->assign('protype', $protype);
+    $this->assign('comple', $cinfo);
+    $this->assign('un_comple', $uinfo);
+    $this->assign('old', $tinfo);
+    $this->assign('ver', $arr_ver);
+    $this->assign('design_status', $design_status);
+    $this->assign('app', $App);
 //    //main
 //    $groupid = $_SESSION['login']['se_groupID'];
 //    $comyid = $_SESSION['login']['se_comyID'];

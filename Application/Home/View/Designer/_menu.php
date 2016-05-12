@@ -2,14 +2,15 @@
   <div class="member_list_title"><span>订单中心</span></div>
   <ul>
     <li><a href="{:U('Designer/designList')}">我的方案</a></li>
-     <li><a href="{:U('Designer/projectList')}">最新订单</a></li>
+    <li><a href="{:U('Designer/projectList')}">最新订单</a></li>
   </ul>
 </div>
 <div class="member_list">
   <div class="member_list_title"><span>案例管理</span></div>
   <ul>
-    <li><a href="">我的案例</a></li>
-    <li><a href="">展装商城</a></li>
+    <li><a href="{:U('Designer/product',['act'=>add])}">发布案例</a></li>
+    <li><a href="{:U('Designer/productList',['type'=>1])}">我的案例</a></li>
+    <li><a href="{:U('Designer/productList',['type'=>2])}">商品案例</a></li>
   </ul>
 </div>
 <div class="member_list">

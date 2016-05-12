@@ -1,0 +1,65 @@
+<script language="javascript">
+var idd ='';
+function onSubmitPayment(idd){
+	$.messager.progress();
+	var ids = $("#pay_code"+idd).val();
+	$("#addFormPayment"+idd).form('submit',{
+		url:'__URL__/config/go/1/pay_code/'+ids,
+		onSubmit: function(){
+			var isValid = $(this).form('validate');
+			if (!isValid){
+				$.messager.progress('close');
+			}
+			return isValid;
+		},
+		success:function(data){
+			$.messager.progress('close');
+            console.log(data);
+			if(data==1){
+				$.messager.alert('提示','更新支付方式成功！','info',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					$("#Payments").datagrid('reload');
+					if(sa==1){
+						cancel['Payment'].dialog('close');
+						cancel['Payment'] = null;
+					}
+				});
+			}else if(data==0){
+				$.messager.alert('提示','更新支付方式失败！','warning');
+			}else{
+				$.messager.alert('提示','您没有修改权限！','warning',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					if(sa==1){
+						cancel['Payment'].dialog('close');
+						cancel['Payment'] = null;
+					}
+				});
+			}
+		}
+	});
+}
+function onResetPayment(idd){
+	cancel['Payment'].dialog('close');
+	cancel['Payment'] = null;
+}
+</script>
+<div class="con-tb">
+<form id="addFormPayment{$uniqid}" method="post">
+ <table class="infobox" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <?php foreach ($payment['setup'] as $key => $var): ?>
+  <tr>
+    <td width="23%"><label for="paymentname"><?= $var['name'] ?></label></td>
+    <td width="77%">
+      <input name="config[<?= $key ?>]" id="<?= $key.$uniqid ?>" class="easyui-validatebox" size="22" data-options="required:true" value="<?= $payment['config'][$key] ?>" /> <?= $var['tips'] ?></td>
+
+  </tr>
+  <?php endforeach ?>
+  <?php unset($payment['setup']);unset($payment['config']);?>
+  <tr>
+    <td height="38" colspan="2" align="center">	<?php foreach ($payment as $key => $var): ?>
+    <input id="<?= $key.$uniqid ?>" type="hidden" name="<?= $key ?>" value="<?= $var ?>">
+	<?php endforeach ;?><a href="javascript:void(0);" onclick="javascript:onSubmitPayment('{$uniqid}')" id="su" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a> &nbsp; <a href="javascript:void(0);" onclick="javascript:onResetPayment('{$uniqid}')" id="re" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a></td>
+  </tr>
+ </table>
+</form>
+</div>

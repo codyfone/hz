@@ -68,7 +68,7 @@ class ExhibitorController extends Controller {
 
       $fields = implode(',', $arr_flelds);
       if (!$view) {//不开启视图
-        $info = $result->table($user_table . ' as t1')->field('SQL_CALC_FOUND_ROWS ' . $fields)->join('LEFT JOIN ' . $group_table . ' as t2 on t2.id = t1.groupid')->where('modelid=' . self::MOUDELID)->order($new_order)->limit($offset, $rows)->select();
+        $info = $result->table($user_table . ' as t1')->field('SQL_CALC_FOUND_ROWS ' . $fields)->join('LEFT JOIN ' . $group_table . ' as t2 on t2.id = t1.groupid')->where('t1.modelid=' . self::MOUDELID)->order($new_order)->limit($offset, $rows)->select();
         $count = $result->query('SELECT FOUND_ROWS() as total');
         $count = $count[0]['total'];
       } else {//开启视图
@@ -99,7 +99,6 @@ class ExhibitorController extends Controller {
         } else {
           $t['status'] = '关闭';
         }
-
         $items[] = $t;
       }
 
@@ -409,7 +408,7 @@ class ExhibitorController extends Controller {
     }
 
     //main
-    $str_id = I('id');
+    $str_id = I('post.id');
     $str_id = strval($str_id);
     $str_id = substr($str_id, 0, -1);
     $arr_id = explode(',', $str_id);
@@ -418,7 +417,7 @@ class ExhibitorController extends Controller {
     $fail = 0;
     foreach ($arr_id as $id) {
       $map['id'] = array('eq', $id);
-      $del = $user->where($map)->delete();
+      $del = $user->relation(true)->where($map)->delete();
       if ($del) {
         $pass++;
       } else {
@@ -429,7 +428,7 @@ class ExhibitorController extends Controller {
     if ($pass == 0) {
       echo 0;
     } else {
-      $this->json(NULL);
+ //     $this->json(NULL);
       echo 1;
     }
     $pass = 0;

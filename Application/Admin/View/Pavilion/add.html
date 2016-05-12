@@ -5,6 +5,10 @@ $(function(){
 		'telephone':'<?php echo $info["telephone"] ?>',
         'addr':'<?php echo $info["addr"] ?>',
         'cityid':'<?php echo $info["cityid"] ?>',
+        'thumb':'<?php echo $info["thumb"] ?>',
+        'hits':'<?php echo $info["hits"] ?>',
+        'recommend':'<?php echo $info["recommend"] ?>',
+
         'website':'<?php echo $info["website"] ?>'
 	});
         // 省级 
@@ -45,6 +49,8 @@ $(function(){
                $("#cityid").val(cid);
             }
         });
+
+        
 });
 
 var idd = '';
@@ -130,10 +136,10 @@ function onResetPav(idd){
   <tr>
     <td width="14%"><label for="cityid">地区</label></td>
     <td width="36%">
-      <input type="hidden" name="cityid" value="{$info['cityid']}">
+      <input type="hidden" name="cityid" value="{$info['cityid']}" id="cityid">
       <select id="province" style="width: 128px" class="easyui-validatebox"></select>
       <select id="city" style="width: 128px" class="easyui-validatebox"></select></td>
-    <td><label for="name">地址</label></td>
+    <td><label for="addr">地址</label></td>
     <td><input name="addr" class="easyui-validatebox" data-options="required:true" style="width: 99%"></td>
   </tr>
   <tr>
@@ -141,6 +147,24 @@ function onResetPav(idd){
     <td width="36%"><input name="website" class="easyui-validatebox" data-options="required:false" style="width: 99%" placeholder="示例:http://www.baidu.com/"></td>
     <td></td>
     <td></td>
+  </tr>
+  <tr>
+    <td width="14%"><label for="thumb">封面图片</label></td>
+    <td colspan="3">
+      
+      <input class="easyui-ueditor" name="thumb" id="thumb" data-options="editType:'upImg'"/>
+    </td>
+  </tr>
+  <tr>
+    <td width="14%"><label for="recommend">推荐</label></td>
+    <td width="36%">
+       <select class="easyui-combobox" name="recommend" id="recommend">  
+        <option value="0">请选择</option>  
+        <option value="1">推荐</option>  
+        <option  value="0">取消推荐</option>  
+     </select>
+    <td><label for="hits">浏览量</label></td>
+    <td><input name="hits" id="hits" class="easyui-validatebox" data-options="" size="10"></td>
   </tr>
   <tr>
     <td width="14%"><label for="images">图片展示</label></td>

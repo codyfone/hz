@@ -1,0 +1,195 @@
+<script language="javascript">
+$(function(){
+	var th = $(".top").height();
+	th = 111-th
+	var wh = $(window).height()-th;
+	var pr = '<?php echo $page_row ?>';
+	var pn = false;
+	if(pr>0){
+		pn = true;
+	}
+	$("#Payments").datagrid({
+		idField:'pay_code',
+		height:wh,
+		treeField:'text',
+		autoRowHeight:false,
+		singleSelect:true,
+		striped:true,
+		rownumbers:true,
+		pagination:pn,
+		pageSize:pr,
+		pageList:[30],
+		method:'get',
+		sortName:'pay_name',
+		sortOrder:'asc',
+		url:'__ACTION__/json/1',
+		fitColumns:true,
+		nowrap:Number('{$Think.config.DATA_NOWRAP}'),
+		selectOnCheck:false,
+		checkOnSelect:true,
+		onBeforeLoad: function () {  
+		},
+		onDblClickRow:function(e,rowIndex,rowData){
+			//var se = $("#Project").datagrid('getSelected');
+			var se = $("#Payments").datagrid('getChecked');
+			var se_len = se.length;
+			var idd = se[0]['pay_code'];
+			if(se_len==1 && idd!=1){
+				$("#addPayments").dialog({
+					title:'配置支付方式',
+					resizable:true,
+					width:520,
+					height:255,
+					href:'__URL__/config/act/edit/pay_code/'+idd,
+					onOpen:function(){
+						cancel['Payment'] = $(this);
+					},
+					onClose:function(){
+						//$("#Payments").datagrid('reload');
+						cancel['Payment'] = null;
+					}
+				});
+			}
+			
+		},
+		onUncheck:function(i,d){
+			$("#Payments").datagrid('unselectRow',i);
+		},
+		toolbar:[{
+		iconCls: 'icon-add',
+			text : '安装',
+			handler: function(){
+				$("#addPayments").dialog({
+					title:'安装支付方式',
+					resizable:true,
+					width:520,
+					height:255,
+					href:'__URL__/config/',
+					onOpen:function(){
+						cancel['Payment'] = $(this);
+					},
+					onClose:function(){
+						//$("#Payments").datagrid('reload');
+						cancel['Payment'] = null;
+					}
+				});
+			}
+		},'-',{
+			iconCls: 'icon-edit',
+			text : '配置',
+			handler: function(){
+				//var se = $("#Project").datagrid('getSelected');
+				var se = $("#Payments").datagrid('getChecked');
+				var se_len = se.length;
+				var idd = se[0]['pay_code'];
+				if(se_len==1 && idd!=1){
+					$("#addPayments").dialog({
+						title:'配置支付方式',
+						resizable:true,
+						width:520,
+						height:255,
+						href:'__URL__/config/pay_code/'+idd,
+						onOpen:function(){
+							cancel['Payment'] = $(this);
+						},
+						onClose:function(){
+							//$("#Payments").datagrid('reload');
+							cancel['Payment'] = null;
+						}
+					});
+				}else if(se_len>1){
+					$.messager.alert('提示','不能同时编辑两行数据！','warning');
+				}
+			}
+		},'-',{
+			iconCls: 'icon-cancel',
+			text : '卸载',
+			handler: function(){
+				var se = $("#Payment").datagrid('getSelected');
+				var idd = se['pay_code'];
+				$.messager.confirm('提示','确定刪除吗！',function(r){
+					if(r==true){
+						$.messager.progress();
+						$.get('__URL__/del/pay_code/'+idd, function(data){
+							$.messager.progress('close');
+							if(data==1){
+								$.messager.alert('提示','删除数据成功！','info',function(){
+									$("#Payment").datagrid('reload');
+								});
+							}else if(data==0){
+								$.messager.alert('提示','删除数据失败！','warning');
+							}else{
+								$.messager.alert('提示','您没有删除权限！','warning');
+							}
+						});
+					}
+				});	
+			}
+		},'-',{
+			iconCls: 'icon-json',
+			text : '更新缓存',
+			handler: function(){
+				$.get('__URL__/json', function(data){
+					if(data==1){
+						$.messager.alert('提示','更新缓存成功！','info');
+					}else{
+						$.messager.alert('提示','更新缓存失败！','warning');
+					}
+				});
+			}
+		},'-',{
+			iconCls: 'icon-reload',
+			text : '重载',
+			handler: function(){
+				$.get('__URL__/clear', function(data){
+					$("#Payments").datagrid('reload');
+				});
+			}
+		}],
+		frozenColumns:[[
+			{checkbox:true}, 
+			{field:'pay_code',title:'CODE',width:100},
+			{field:'pay_name',title:'支付方式',width:120}
+		]],
+		columns:[[  
+			{field:'pay_desc',title:'描述',width:300}, 
+            {field:'applie',title:'设备',width:40,sortable:true},
+			{field:'new_enabled',title:'状态',width:40,sortable:true},
+			{field:'is_install',title:'是否安装',width:40,sortable:true}
+		]]
+	});
+	
+	 var dataview = '<?php echo C("DATAGRID_VIEW") ?>';
+	 if(dataview!='0'){
+		var pager = $('#Payments').datagrid('getPager');
+		pager.pagination({
+			layout: 'list,sep,first,prev,sep,manual,sep,next,last,sep,refresh',
+			displayMsg: '共{total}记录'
+		});
+	 }
+	
+	$("#rightTabs").tabs({
+		onClose:function(t,i){
+			$.ajaxSetup({  
+				async : false  
+			});
+			if(t=='支付方式管理'){
+				$.get('__URL__/clear', function(data){});
+			}	
+			$.ajaxSetup({  
+				async : true  
+			});
+		}
+	});
+	
+	$("#rightTabs").tabs('select','支付方式管理');
+});
+</script>
+<div class="con" id="PaymentCon" onselectstart="return false;" style="-moz-user-select:none;">
+ <if condition="C('DATAGRID_VIEW')!='0'">
+ <table id="Payments" data-options="view:<?php echo C("DATAGRID_VIEW") ?>"></table>
+ <else />
+ <table id="Payments"></table>
+ </if>
+</div>
+<div id="addPayments"></div>

@@ -410,7 +410,7 @@ class DesignerController extends Controller {
     $fail = 0;
     foreach ($arr_id as $id) {
       $map['id'] = array('eq', $id);
-      $del = $user->where($map)->delete();
+      $del = $user->relation(true)->where($map)->delete();
       if ($del) {
         $pass++;
       } else {

@@ -14,7 +14,7 @@
         <a href="">手机版</a>
       </div>
       <div class="hz_top_k hz_top_01">
-        <a href="">帮助中心</a>
+        <a href="{:U('Article/index',array('cid'=>7))}">帮助中心</a>
       </div>
       <div class="hz_top_k hz_top_02">
         <a href=""></a>

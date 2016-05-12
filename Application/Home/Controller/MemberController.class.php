@@ -45,18 +45,20 @@ class MemberController extends HomeController {
       /* 调用注册接口注册用户 */
       $User = new UserApi;
       $uid = $User->register($username, $password, $email, $mobile);
+      //$uid = 1;
       if (0 < $uid) { //注册成功
         //TODO: 发送验证邮件
-        $data['nickname'] = $nickname ? $nickname : $username;
+         $data['nickname'] = $nickname ? $nickname : $username;
+         $data2 = ['userid'=>$uid,'name'=>$data['nickname']];
         if ($type == 2) {
           $data = ['modelid' => 2, 'groupid' => 6];
-          M('Member_designer')->add(['userid'=>$uid,'name'=>$data['nickname']]);
+          M('Member_designer')->add($data2);
         } else if ($type == 3) {
           $data = ['modelid' => 3, 'groupid' => 12];
-          M('Member_factory')->add(['userid'=>$uid,'name'=>$data['nickname']]);
+          M('Member_factory')->add($data2);
         } else {
           $data = ['modelid' => 1, 'groupid' => 11];
-          M('Member_exhibitor')->add(['userid'=>$uid,'name'=>$data['nickname']]);
+          M('Member_exhibitor')->add($data2);
         }
         // $data['status'] = 
         M('Member')->where('id=' . $uid)->save($data);

@@ -1,0 +1,133 @@
+<script language="javascript">
+  $(function () {
+    var th = $(".top").height();
+    th = 111 - th;
+    var wh = $(window).height() - th;
+
+    $("#Case").datagrid({
+      //title:'案例列表',	
+      height: wh,
+      autoRowHeight: false,
+      singleSelect: true,
+      striped: true,
+      rownumbers: true,
+      method: 'get',
+      url: '__ACTION__/type/{$type}/json/1',
+      fitColumns: true,
+      nowrap: Number('{$Think.config.DATA_NOWRAP}'),
+      onBeforeLoad: function () {
+
+      },
+      onDblClickRow: function (e, rowIndex, rowData) {
+        var se = $(this).datagrid('getSelected');
+        var idd = se['id'];
+        $("#addCase").dialog({
+          title: '编辑案例',
+          resizable: true,
+          width: 546,
+          height: 406,
+          href: '__URL__/add/act/edit/id/' + idd,
+          onOpen: function () {
+            cancel['Case'] = $(this);
+          },
+          onClose: function () {
+            //$(this).dialog('destroy');
+            //$("#Case").datagrid('reload');
+            cancel['Case'] = null;
+          }
+        });
+      },
+      toolbar: [
+//        {
+//          iconCls: 'icon-add',
+//          text: '新增',
+//          handler: function () {
+//            $("#addCase").dialog({
+//              title: '新增案例',
+//              resizable: true,
+//              width: 546,
+//              height: 406,
+//              href: '__URL__/add/act/add',
+//              onOpen: function () {
+//                cancel['Case'] = $(this);
+//              },
+//              onClose: function () {
+//                //$(this).dialog('destroy');
+//                //$("#Case").datagrid('reload');
+//                cancel['Case'] = null;
+//              }
+//            });
+//          }
+//        }, '-', 
+        {
+          iconCls: 'icon-edit',
+          text: '编辑',
+          handler: function () {
+            var se = $("#Case").datagrid('getSelected');
+            var idd = se['id'];
+            $("#addCase").dialog({
+              title: '编辑案例',
+              resizable: true,
+              width: 546,
+              height: 406,
+              href: '__URL__/add/act/edit/id/' + idd,
+              onOpen: function () {
+                cancel['Case'] = $(this);
+              },
+              onClose: function () {
+                //$(this).dialog('destroy');
+                //$("#Case").datagrid('reload');
+                cancel['Case'] = null;
+              }
+            });
+          }
+        }, '-', {
+          iconCls: 'icon-cancel',
+          text: '删除',
+          handler: function () {
+            var se = $("#Case").datagrid('getSelected');
+            var idd = se['id'];
+            $.messager.confirm('提示', '确定刪除吗！', function (r) {
+              if (r == true) {
+                $.messager.progress();
+                $.get('__URL__/del/id/' + idd, function (data) {
+                  $.messager.progress('close');
+                  if (data == 1) {
+                    $.messager.alert('提示', '删除数据成功！', 'info', function () {
+                      $("#Case").datagrid('reload');
+                    });
+                  } else if (data == 0) {
+                    $.messager.alert('提示', '删除数据失败！', 'warning');
+                  } else {
+                    $.messager.alert('提示', '您没有删除权限！', 'warning');
+                  }
+                });
+              }
+            });
+          }
+        }, {
+          iconCls: 'icon-reload',
+          text: '重载',
+          handler: function () {
+            $("#Case").datagrid('reload');
+          }
+        }
+      ],
+      columns: [[
+          {field: 'title', title: '案例名称', width: 250},
+          {field: 'industry', title: '行业', width: 300},
+          {field: 'floor_area', title: '面积', width: 80},
+          {field: 'price', title: '价格', width: 80},
+//          {field: 'structure', title: '结构', width: 80},
+//          {field: 't1_new_open_num', title: '规格', width: 80},
+ //         {field: 'manner', title: '风格', width: 150},
+          {field: 'hits', title: '点击', width: 50},
+          {field: 'addtime', title: '添加时间', width: 70}
+        ]]
+    });
+  });
+</script>
+<div class="con" id="CaseCon" onselectstart="return false;" style="-moz-user-select:none;">
+  <table id="Case"></table>
+</div>
+<div id="addCase"></div>

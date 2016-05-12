@@ -1,0 +1,15 @@
+<script language="javascript">
+  $(function () {
+    var th = $(".top").height();
+    th = 111 - th
+    var wh = $(window).height() - th;
+    $("#projectUserTabs").height(wh);
+  });
+</script>
+<div class="con" id="ProjectIndexCon">
+  <div id="projectUserTabs" class="easyui-tabs">
+    <div title="待审核案例" data-options="href:'__URL__/caselist/type/0',cache:false"></div>
+    <div title="普通案例" data-options="href:'__URL__/caselist/type/1',cache:false"></div>
+    <div title="商品案例" data-options="href:'__URL__/caselist/type/2',cache:false"></div>
+  </div>
+</div>

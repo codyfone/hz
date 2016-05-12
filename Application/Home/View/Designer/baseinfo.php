@@ -19,8 +19,8 @@
 
         $("#nickname").formValidator({onShow: "请输入昵称", onFocus: "昵称应该为2-20位之间"}).inputValidator({min: 2, max: 20, onError: "昵称应该为2-20位之间"}).regexValidator({regExp: "ps_nickname", dataType: "enum", onError: "昵称格式错误"}).ajaxValidator({
           type: "get",
-          url: "",
-          data: "<?= U('Member/checkDenyNickname') ?>",
+          url: "<?= U('Member/checkDenyNickname') ?>",
+          data: "",
           dataType: "html",
           async: false,
           success: function (data) {
@@ -30,10 +30,10 @@
           onError: "名称已经注册",
           onWait: "请稍候..."
         });
-        $("#mobile").formValidator({onShow: "请输入手机号", onFocus: "手机号输入错误", onCorrect: "手机号输入正确"}).inputValidator({min: 11, max: 11, onError: "手机号应该为11位数字"}).regexValidator({regExp: "mobile", datatype: "enum", onError: "手机号无效"}).ajaxValidator({
+        $("#mobile").formValidator({onShow: "请输入手机号", onFocus: "手机号输入错误", onCorrect: "手机号输入正确"}).inputValidator({min: 11, max: 11, onError: "手机号应该为11位数字"}).regexValidator({regExp: "mobile", dataType: "enum", onError: "手机号无效"}).ajaxValidator({
           type: "get",
-          url: "",
-          data: "<?= U('Member/checkDenyMobile') ?>",
+          url: "<?= U('Member/checkDenyMobile') ?>",
+          data: "",
           dataType: "html",
           async: false,
           success: function (data) {
@@ -41,7 +41,7 @@
           },
           buttons: $("#dosubmit"),
           onError: "禁止注册或手机号已被注册",
-          onwait: "请稍候..."
+          onWait: "请稍候..."
         });
         $("#alipay").formValidator({onShow: "默认提现的支付宝账号", onFocus: "默认提现的支付宝账号"});
       });
@@ -50,7 +50,7 @@
         var $ld5 = $(".pc-select-areaid");
         $ld5.ld({ajaxOptions: {"url": "<?= U('citys/list_json') ?>"}, defaultParentId: 0, style: {"width": 120}})
         var ld5_api = $ld5.ld("api");
-        ld5_api.selected();
+        ld5_api.selected({$area});
         $ld5.bind("change", onchange);
         function onchange(e) {
           var $target = $(e.target);

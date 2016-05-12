@@ -47,6 +47,8 @@ class ExhibitorController extends HomeController {
       ];
     } else {
       $info = M('Member')->where('id=' . $this->mid)->find();
+      $area = getFullArea($info['areaid']);
+      $this->assign('area', $area);
       $this->assign('info', $info);
       $this->display();
     }
@@ -556,7 +558,7 @@ class ExhibitorController extends HomeController {
       );
 
       $sys = new \Org\Net\FileSystem();
-      $json = $sys->getFile(RUNTIME_PATH . 'Data/Json/Linkage/renwuzhuangtai_data.json');
+      $json = $sys->getFile(RUNTIME_PATH . 'Data/Json/Linkage/fanganzhuangtai_data.json');
       $status = json_decode($json, true);
 
       $this->assign('nowyear', date("Y"));
@@ -637,14 +639,6 @@ class ExhibitorController extends HomeController {
       $this->assign('id', $id);
       $this->display();
     }
-  }
-
-  /*
-   * 邮箱验证
-   */
-
-  public function verify_email() {
-    
   }
 
 }

@@ -8,7 +8,7 @@ $(function(){
 	var ch = $("body").height();
 	var pr = '<?php echo $page_row ?>';
 	var pn = false;
-	var whs = (wh-39);
+	var whs = (wh-280);
 	if(pr>0){
 		pn = true;
 	}
@@ -108,29 +108,31 @@ $(function(){
 		onUncheck:function(i,d){
 			$("#Project{$uniqid}").datagrid('unselectRow',i);
 		},
-		toolbar:[{
-		iconCls: 'icon-add',
-			text : '新增',
-			handler: function(){
-				$("#addProject{$uniqid}").dialog({
-					title:'新增项目',
-					resizable:true,
-					width:850,
-					height:480,
-					href:'__URL__/add/act/add',
-					onOpen:function(){
-						cancel['Project'] = $(this);
-						cancel['ProjectName'] = $("#Project{$uniqid}");
-					},
-					onClose:function(){
-						//$(this).dialog('destroy');
-						//$("#Project{$uniqid}").datagrid('reload');
-						cancel['Project'] = null;
-						cancel['ProjectName'] = null;
-					}
-				});
-			}
-		},'-',{
+		toolbar:[
+//          {
+//		iconCls: 'icon-add',
+//			text : '新增',
+//			handler: function(){
+//				$("#addProject{$uniqid}").dialog({
+//					title:'新增项目',
+//					resizable:true,
+//					width:850,
+//					height:480,
+//					href:'__URL__/add/act/add',
+//					onOpen:function(){
+//						cancel['Project'] = $(this);
+//						cancel['ProjectName'] = $("#Project{$uniqid}");
+//					},
+//					onClose:function(){
+//						//$(this).dialog('destroy');
+//						//$("#Project{$uniqid}").datagrid('reload');
+//						cancel['Project'] = null;
+//						cancel['ProjectName'] = null;
+//					}
+//				});
+//			}
+//		},'-',
+        {
 			iconCls: 'icon-edit',
 			text : '编辑',
 			handler: function(){

@@ -1,3 +1,8 @@
+<?php
+    $about_us = M('Article')->where('cid=6')->find();
+    $service = M('Article')->where('cid=8')->select();
+    //var_dump($service);
+?>
 <div class="clear"></div>
 <div class="hz_foot">
   <div class="hz_footbox">
@@ -7,10 +12,8 @@
         <p>关于我们</p>
       </div>
       <div class="hz_footlx">
-        <p>汇展之家,传承装修的品质与最好的生活理念,开创了中国全新的装修
-          先河流,汇展之家,传承装修的品质与最好的生活理念,开创了中国全
-          新的装修。</p>
-        <a href=""><img src="__PUBLIC__/images/foot_03.jpg"></a>
+          <p><?php echo mb_substr($about_us['content'],0,69,'utf-8') ?></p>
+        <a href="{:U('Article/view',array('id'=>$about_us['id']))}"><img src="__PUBLIC__/images/foot_03.jpg"></a>
       </div>
     </div>
     <div class="hz_footl">
@@ -19,15 +22,9 @@
         <p>我们的服务</p>
       </div>
       <div class="hz_footlx">
-        <div class="hz_foot_a"><a href="">新手指南</a></div>
-        <div class="hz_foot_a"><a href="">找设计</a></div>
-        <div class="hz_foot_a"><a href="">找搭建</a></div>
-        <div class="hz_foot_a"><a href="">智能报价</a></div>
-        <div class="hz_foot_a"><a href="">设计师黑名单</a></div>
-        <div class="hz_foot_a"><a href="">加工厂黑名单</a></div>
-        <div class="hz_foot_a"><a href="">争议处理</a></div>
-        <div class="hz_foot_a"><a href="">保险保障</a></div>
-        <div class="hz_foot_a"><a href="">找工厂</a></div>
+        <?php foreach ($service as $key => $value) { ?>
+            <div class="hz_foot_a"><a href="{:U('Article/view',array('id'=>$value['id']))}">{$value['title']}</a></div>  
+        <?php  } ?>
       </div>
     </div>
     <div class="hz_footl hz_foot_te">

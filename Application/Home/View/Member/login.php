@@ -26,7 +26,7 @@
         <div class="login_left fl">
           <div class="login_form">
             <h2 style="color:#e92424;font-size:26px;font-weight: bold;margin-bottom: 20px;">会员登录</h2>
-            <form method="post" action="" id="myform" name="myform">
+            <form method="post" action="__SELF__" id="myform" name="myform">
               <div class="login_user"><input class="input-txt" type="text" id="username" name="username" size="22" placeholder="请输入用户名"></div>
               <div class="login_password"><input class="input-txt" type="password" id="password" name="password" size="22" placeholder="请输入密码"></div>
               <div class="login_code"><input class="input-txt" type="text" id="code" name="code" size="8" placeholder="验证码"> <span class="verifycode"><img id="code_img" onclick="this.src = this.src + & quot; & amp; & quot; + Math.random()" src="http://www.jiaguzaixian.com/api.php?op=checkcode&amp;code_len=5&amp;font_size=14&amp;width=120&amp;height=26&amp;font_color=&amp;background="></span></div>
@@ -70,7 +70,8 @@
         if (data.status) {
           window.location.href = data.url;
         } else {
-          self.find(".Validform_checktip").text(data.info);
+          alert(data.info);
+       //   self.find(".Validform_checktip").text(data.info);
           //刷新验证码
           $(".reloadverify").click();
         }

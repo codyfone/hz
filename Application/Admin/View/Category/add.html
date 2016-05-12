@@ -1,0 +1,98 @@
+<script language="javascript">
+$(function(){
+	$("#addFormExh{$uniqid}").form('load',{
+		'title':'<?= $info["title"] ?>',		
+                '_parentId':'<?= $info["_parentId"] ?>',
+
+
+	});
+});
+
+var idd = '';
+function onSubmitExh(idd){
+	$.messager.progress();
+	$("#addFormExh"+idd).form('submit',{
+		url:'__URL__/add/act/add/go/1',
+		success:function(data){
+    
+			$.messager.progress('close');
+			if(data==1){
+				$.messager.alert('提示','新增数据成功！','info',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					$("#Exh").treegrid('reload');
+					if(sa==1){
+						cancel['Exh'].dialog('close');
+						cancel['Exh'] = null;
+					}
+				});
+			}else if(data==0){
+				$.messager.alert('提示','新增数据失败！','warning');
+			}else{
+				$.messager.alert('提示','您没有新增权限！','warning',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					if(sa==1){
+						cancel['Exh'].dialog('close');
+						cancel['Exh'] = null;
+					}
+				});
+			}
+		}
+	});
+}
+
+function onUploadExh(idd){
+	$.messager.progress();
+	var ids = $("#ids"+idd).val();
+	$("#addFormExh"+idd).form('submit',{
+		url:'__URL__/add/act/edit/go/1/id/'+ids,
+		success:function(data){
+			$.messager.progress('close');
+			if(data==1){
+				$.messager.alert('提示','更新数据成功！','info',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					$("#Exh").treegrid('reload');
+					if(sa==1){
+						cancel['Exh'].dialog('close');
+						cancel['Exh'] = null;
+					}
+				});
+				$("#add").dialog('refresh');
+			}else if(data==0){
+				$.messager.alert('提示','更新数据失败！','warning');
+			}else{
+				$.messager.alert('提示','您没有修改权限！','warning',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					if(sa==1){
+						cancel['Exh'].dialog('close');
+						cancel['Exh'] = null;
+					}
+				});
+			}
+		}
+	});
+}
+
+function onResetExh(idd){
+	cancel['Exh'].dialog('close');
+	cancel['Exh'] = null;
+}
+</script>
+<div class="con-tb">
+<form id="addFormExh{$uniqid}" method="post">
+ <table class="infobox" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="14%"><label for="title">分类标题</label></td>
+    <td width="36%">
+    <input name="title" class="easyui-validatebox" data-options="required:true" style="width:99%"><input id="ids{$uniqid}" type="hidden" value="{$id}"></td>
+    <td width="14%"><label for="_parentId">所属分类</label></td>
+    <td width="36%"><input name="_parentId" class="easyui-combotree relo" id="_parentId{$uniqid}" size="28" data-options="url:'__ITEM__/index.php/Admin/category/list_json',editable:false,method:'get',required:true,valueField:'id',textField:'text'" /></td>
+  </tr>
+ 
+
+
+  <tr>
+    <td height="38" colspan="4" align="center"><if condition="$act=='add'"><a href="javascript:void(0);" onclick="javascript:onSubmitExh('{$uniqid}')" id="su" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a><else /><a href="javascript:void(0);" onclick="javascript:return onUploadExh('{$uniqid}')" id="sue" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a></if> &nbsp; <a href="javascript:void(0);" onclick="javascript:onResetExh('{$uniqid}')" id="re" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a></td>
+  </tr>
+ </table>
+</form>
+</div>

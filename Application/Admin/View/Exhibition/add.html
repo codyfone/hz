@@ -13,7 +13,10 @@ $(function(){
         'space':'<?= $info["space"] ?>',
         'exhibitor':'<?= $info["exhibitor"] ?>',
         'audience':'<?= $info["audience"] ?>',
-        'range':'<?= $info["range"] ?>'
+        'range':'<?= $info["range"] ?>',
+        'thumb':'<?php echo $info["thumb"] ?>',
+        'hits':'<?php echo $info["hits"] ?>',
+        'recommend':'<?php echo $info["recommend"] ?>',
 	});
 });
 
@@ -126,8 +129,32 @@ function onResetExh(idd){
     <td width="36%"><input name="audience" type="text" style="width:99%"></td>
   </tr>
   <tr>
+    <td width="14%"><label for="thumb">封面图片</label></td>
+    <td colspan="3">
+      
+      <input class="easyui-ueditor" name="thumb" id="thumb" data-options="editType:'upImg'"/>
+    </td>
+  </tr>
+  <tr>
+    <td width="14%"><label for="recommend">推荐</label></td>
+    <td width="36%">
+       <select class="easyui-combobox" name="recommend" id="recommend">  
+        <option value="0">请选择</option>  
+        <option value="1">推荐</option>  
+        <option  value="0">取消推荐</option>  
+     </select>
+    <td><label for="hits">浏览量</label></td>
+    <td><input name="hits" id="hits" class="easyui-validatebox" data-options="" size="10"></td>
+  </tr>
+  <tr>
+    <td width="14%"><label for="images">图片展示</label></td>
+    <td colspan="3">
+      <textarea class="easyui-ueditor" name="images" id="images" data-options="editType:'upMutiImgs'" style="display: none;">{$info['images']}</textarea>
+    </td>
+  </tr>
+  <tr>
     <td width="14%"><label for="content">展会介绍</label></td>
-    <td colspan="3"><textarea name="content" class="easyui-kindeditor" style="width:99%;height:300px" data-options=""></textarea></td>
+    <td colspan="3"><textarea name="content" class="easyui-kindeditor" style="width:99%;height:300px" data-options="">{$info['content']}</textarea></td>
   </tr>
 
   <tr>

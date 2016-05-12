@@ -3,8 +3,6 @@ return array(
 	'CFG_NAME' => '我的项目',
 	'CFG_HOST' => 'http://hz.dev',
 	'CFG_PHONE' => 'repassword',
-	'APP_GROUP_LIST' => 'Admin,Public',
-	'DEFAULT_GROUP' => 'Admin',
 	'CFG_FAX' => '13526492078',
 	'CFG_MAIL' => '189980852@qq.com',
 	'CFG_ADDRESS' => '河南郑州',

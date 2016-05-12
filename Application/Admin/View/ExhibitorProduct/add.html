@@ -1,0 +1,193 @@
+<script language="javascript">
+var role = '{$role}';
+var act = '{$act}';
+if(role==-2){
+	$.messager.alert('提示','您没有新增权限！','warning');
+	cancel['Case'].dialog('close');
+	cancel['Case'] = null;
+}else if(role==-3){
+	$.messager.alert('提示','您没有编辑权限！','warning');
+	cancel['Case'].dialog('close');
+	cancel['Case'] = null;
+}
+$(function(){
+	$("#addFormCase{$uniqid}").form('load',{
+		'title':'<?= $info["title"] ?>',
+		'open_num':'<?= $info["open_num"] ?>',
+        'industry_id':'<?= $info["industry_id"] ?>',
+        'code':'<?= $info["code"] ?>',
+        'meteria_type':'<?= $info["meteria_type"] ?>',
+        'floor_area':'<?= $info["floor_area"] ?>',
+        'line_style':'<?= $info["line_style"] ?>',
+        'structure':'<?= $info["structure"] ?>',
+        'tags':'<?= $info["tags"] ?>',
+        'drawing':'<?= $info["drawing"] ?>',
+        'hits':'<?= $info["hits"] ?>',
+        'status':'<?= $info["status"] ?>',
+        'price':'<?= $info["price"] ?>',
+        'content':'<?= $info["content"] ?>'
+	});
+});
+
+var idd = '';
+function onSubmitCase(idd){
+	$.messager.progress();
+	$("#addFormCase"+idd).form('submit',{
+		url:'__URL__/add/act/add/go/1',
+		onSubmit: function(){
+			var isValid = $(this).form('validate');
+			if (!isValid){
+				$.messager.progress('close');
+			}
+			return isValid;
+		},
+		success:function(data){
+			$.messager.progress('close');
+      //console.log(data);
+			if(data==1){
+				$.messager.alert('提示','新增数据成功！','info',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					cancel['CaseName'].datagrid('reload');
+					if(sa==1){
+						cancel['Case'].dialog('close');
+						cancel['Case'] = null;
+					}
+				});
+			}else if(data==0){
+				$.messager.alert('提示','新增数据失败！','warning');
+			}else{
+				$.messager.alert('提示','您没有新增权限！','warning',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					if(sa==1){
+						cancel['Case'].dialog('close');
+						cancel['Case'] = null;
+					}
+				});
+			}
+		}
+	});
+}
+
+function onUploadCase(idd){
+	$.messager.progress();
+	var ids = $("#ids"+idd).val();
+	$("#addFormCase"+idd).form('submit',{
+		url:'__URL__/add/act/edit/go/1/id/'+ids,
+		onSubmit: function(){
+			var isValid = $(this).form('validate');
+			if (!isValid){
+				$.messager.progress('close');
+			}
+			return isValid;
+		},
+		success:function(data){
+			$.messager.progress('close');
+            console.log(data);
+			if(data==1){
+				$.messager.alert('提示','更新数据成功！','info',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					$("#case").datagrid('reload');
+					$("#proDetailCon").panel('refresh');
+					if(sa==1){
+						cancel['Case'].dialog('close');
+						cancel['Case'] = null;
+					}
+				});
+				$("#add").dialog('refresh');
+			}else if(data==0){
+				$.messager.alert('提示','更新数据失败！','warning');
+			}else{
+				$.messager.alert('提示','您没有更新权限！','warning',function(){
+					var sa = '{$Think.config.SUBMIT_ACTION}';
+					if(sa==1){
+						cancel['Case'].dialog('close');
+						cancel['Case'] = null;
+					}
+				});
+			}
+		}
+	});
+}
+
+function onResetCase(idd){
+	cancel['Case'].dialog('close');
+	cancel['CaseName'] = null;
+	cancel['Case'] = null;
+}
+</script>
+<div class="con-tb">
+<form class="projecr-form" id="addFormCase{$uniqid}" method="post">
+ <table class="infobox" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="13%"><label for="title">案例名称</label><input id="ids{$uniqid}" type="hidden" value="{$id}" /></td>
+    <td colspan="3"><input name="title" type="text" class="easyui-validatebox" value="" style="width:99%;" data-options="required:true,validType:'ptext'" /></td>
+  </tr>
+  <tr>
+ <td width="13%"><label for="status">案例类型</label></td>
+        <td width="20%"><select name="status" id="status{$uinqid}" class="easyui-combobox" editable="false">
+            <option value="0">关闭</option>
+            <option value="1">普通案例</option>
+            <option value="2">商品</option>
+      </select></td>
+    <td width="13%"><label for="industry_id">行业类别</label></td>
+    <td>
+<input name="industry_id" class="easyui-combobox relo" id="industry_id{$uniqid}" size="28" data-options="url:'__ITEM__/__RUNTIME__/Data/Json/Industry_data.json',editable:false,method:'get',required:false,valueField:'id',textField:'text'" />
+
+    </td>  
+
+    </tr>
+  <tr>
+    <td><label for="open_num">规格</label></td>
+    <td>
+            <select name="open_num" id="open_num{$uinqid}" class="easyui-combobox" editable="false">
+            <option value="1">1面开口</option>
+            <option value="2">2面开口</option>
+            <option value="3">3面开口</option>
+            <option value="4">4面开口</option>
+      </select>
+    </td>
+
+    <td width="13%"><label for="stucture">展台结构</label></td>
+    <td>
+      <select name="stucture" id="stucture{$uinqid}" class="easyui-combobox" editable="false">
+            <option value="1">木质结构</option>
+            <option value="2">衍架结构</option>
+            <option value="3">型材结构</option>
+            <option value="4">双层结构</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td width="13%"><label>面积</label></td>
+    <td>
+      <input type="text" class="easyui-validatebox" name="floor_area" id="floor_area{$uinqid}" size="5"> m<sup>2</sup>
+    </td>
+ <td width="13%"><label for="price">价格</label></td>
+    <td><input type="text" name="price" id="price{$uniqid}" class="easyui-validatebox" size="5" data-options="validType:'num'" /> 元 </td>
+
+  </tr>
+
+  <tr>
+    <td width="13%"><label>设计风格</label></td>
+    <td colspan="3">
+      <label for="manner_0" style="font-weight: normal">现代 <input type="checkbox" name="manner" value="1"> </label>&nbsp;
+      <label for="manner_1" style="font-weight: normal">高雅 <input type="checkbox" name="manner" value="2"> </label>&nbsp;
+      <label for="manner_2" style="font-weight: normal">实用 <input type="checkbox" name="manner" value="3"> </label>&nbsp;
+      <label for="manner_3" style="font-weight: normal">简洁 <input type="checkbox" name="manner" value="4"> </label>&nbsp;
+      <label for="manner_4" style="font-weight: normal">怀旧 <input type="checkbox" name="manner" value="5"> </label>&nbsp;
+      <label for="manner_5" style="font-weight: normal">科技 <input type="checkbox" name="manner" value="6"> </label>&nbsp;
+      <label for="manner_6" style="font-weight: normal">欧式 <input type="checkbox" name="manner" value="7"> </label>
+    </td>
+ </tr>
+   <tr>
+    <td width="13%"><label>图片展示</label></td>
+    <td colspan="3">
+      <textarea class="easyui-ueditor" name="drawing" id="drawing" data-options="editType:'upMutiImgs'" style="display: none;">{$info['images']}</textarea>
+    </td>
+  </tr>
+
+    <td height="38" colspan="4" align="center"><if condition="$act=='add'"><a href="javascript:void(0);" onclick="javascript:onSubmitCase('{$uniqid}')" id="su" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a><else /><a href="javascript:void(0);" onclick="javascript:return onUploadCase('{$uniqid}')" id="sue" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a></if> &nbsp; <a href="javascript:void(0);" onclick="javascript:onResetCase('{$uniqid}')" id="re" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a></td>
+  </tr>
+ </table>
+</form>
+</div>

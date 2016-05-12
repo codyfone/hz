@@ -294,7 +294,7 @@ class UserController extends Controller {
     }
 
     //main
-    $str_id = I('id');
+    $str_id = I('post.id');
     $str_id = strval($str_id);
     $str_id = substr($str_id, 0, -1);
     $arr_id = explode(',', $str_id);
