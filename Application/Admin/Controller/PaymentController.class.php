@@ -36,7 +36,7 @@ class PaymentController extends Controller {
           'isonline' => $v['isonline'],
           'applie' => $v['applie'],
           'version' => $v['version'],
-          'is_install' => $v['is_install'] == 1 ? '安装' : '未安装',
+          'pay_install' => $v['pay_install'] == '1' ? '安装' : '未安装',
         ];
       }
       echo json_encode($info);
@@ -100,13 +100,14 @@ class PaymentController extends Controller {
       echo $role;
       exit;
     }
-    echo $pay_code;exit;
+    echo $pay_code;
+    exit;
     //main
     if (!$pay_code) {
       echo 0;
     } else {
       $payment = M('Payment');
-      $map= [];
+      $map = [];
       $map['pay_code'] = array('eq', $pay_code);
       $del = $payment->where($map)->delete();
       unset($map);
@@ -126,19 +127,19 @@ class PaymentController extends Controller {
    * @examlpe 
    */
   public function json() {
-    $Write = A('Write', 'Helper');
-    $this->service->build_cache();
+    //  $Write = A('Write', 'Helper');
+    $ww = $this->service->build_cache();
     //main
-    $payment = M('Payment');
-    $info = $payment->field('types,keyword,vals')->select();
-    $path = APP_PATH . '/Common/Conf/paycfg.php';
-    $ww = $Write->write($path, $info, 'conf');
+//    $payment = M('Payment');
+//    $info = $payment->field('types,keyword,vals')->select();
+//    $path = APP_PATH . '/Common/Conf/paycfg.php';
+//    $ww = $Write->write($path, $info, 'conf');
     if ($ww) {
       echo 1;
     } else {
       echo 0;
     }
-    unset($info, $path, $payment, $Write);
+    //   unset($info, $path, $payment, $Write);
   }
 
 }

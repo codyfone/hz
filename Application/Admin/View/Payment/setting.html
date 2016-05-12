@@ -75,33 +75,6 @@ $(function(){
 				});
 			}
 		},'-',{
-			iconCls: 'icon-edit',
-			text : '配置',
-			handler: function(){
-				//var se = $("#Project").datagrid('getSelected');
-				var se = $("#Payments").datagrid('getChecked');
-				var se_len = se.length;
-				var idd = se[0]['pay_code'];
-				if(se_len==1 && idd!=1){
-					$("#addPayments").dialog({
-						title:'配置支付方式',
-						resizable:true,
-						width:520,
-						height:255,
-						href:'__URL__/config/pay_code/'+idd,
-						onOpen:function(){
-							cancel['Payment'] = $(this);
-						},
-						onClose:function(){
-							//$("#Payments").datagrid('reload');
-							cancel['Payment'] = null;
-						}
-					});
-				}else if(se_len>1){
-					$.messager.alert('提示','不能同时编辑两行数据！','warning');
-				}
-			}
-		},'-',{
 			iconCls: 'icon-cancel',
 			text : '卸载',
 			handler: function(){
@@ -155,7 +128,7 @@ $(function(){
 			{field:'pay_desc',title:'描述',width:300}, 
             {field:'applie',title:'设备',width:40,sortable:true},
 			{field:'new_enabled',title:'状态',width:40,sortable:true},
-			{field:'is_install',title:'是否安装',width:40,sortable:true}
+			{field:'pay_install',title:'是否安装',width:40,sortable:true}
 		]]
 	});
 	
